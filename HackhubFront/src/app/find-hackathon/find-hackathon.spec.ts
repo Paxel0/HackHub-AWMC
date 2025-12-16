@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FindHuckathon } from './find-huckathon';
+import { FindHackathon } from './find-hackathon';
 
-describe('FindHuckathon', () => {
-  let component: FindHuckathon;
-  let fixture: ComponentFixture<FindHuckathon>;
-
+describe('FindHackathon', () => {
+  let component: FindHackathon;
+  let fixture: ComponentFixture<FindHackathon>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FindHuckathon]
+      imports: [FindHackathon]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FindHuckathon);
+    fixture = TestBed.createComponent(FindHackathon);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

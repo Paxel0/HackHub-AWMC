@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { FindHuckathon } from './find-huckathon/find-huckathon';
+import { FindHackathon } from './find-hackathon/find-hackathon';
 
 export const routes: Routes = [
-    { path: 'find-huckathon', component: FindHuckathon }
+    { path: 'find-hackathon', component: FindHackathon }
     
 ];
