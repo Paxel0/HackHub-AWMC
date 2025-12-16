@@ -1,0 +1,45 @@
+<html>
+  <main>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <a class="navbar-brand" href="#">Huckathon Plattform</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/find-huckathon">Find Huckathon</a>
+        </li>
+      </ul>
+      <div class="ms-auto">
+      <button type="button" class="btn btn-primary">Login/Register</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Come Funziona Section -->
+  <section class="bg-dark text-white py-5 border-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-4">
+          <h2 class="display-5 fw-bold mb-3">Come Funziona la Piattaforma</h2>
+          <p class="lead text-muted">
+            Scopri come puoi partecipare ai migliori hackathon del mondo in pochi semplici step. 
+            Registrati, naviga gli eventi e inizia a competere oggi stesso.
+          </p>
+        </div>
+        <div class="col-12 text-center">
+          <button type="button" class="btn btn-primary btn-lg">Maggiori Informazioni</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</html>
+
+<router-outlet />
