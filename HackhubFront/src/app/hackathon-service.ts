@@ -20,7 +20,7 @@ export interface Hackathon {
 export class HackathonService {
   private http = inject(HttpClient);
 
-  list(): Observable<Hackathon[]> {
-    return this.http.get<Hackathon[]>('/api/hackathons'); // URL relativa per usare il proxy
-  }
+  list(): Observable<string> {
+  return this.http.get('/hackathons', { responseType: 'text' });
+}
 }
