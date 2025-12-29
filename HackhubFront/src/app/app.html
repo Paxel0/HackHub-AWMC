@@ -1,6 +1,6 @@
 <html>
   <main>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
     <a class="navbar-brand" href="#">Hackathon Plattform</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -21,7 +21,8 @@
     </div>
   </nav>
 
-  <!-- Come Funziona Section -->
+  Come Funziona Section 
+
   <section class="bg-dark text-white py-5 border-bottom">
     <div class="container">
       <div class="row">
@@ -37,8 +38,19 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
+<app-navbar></app-navbar>
 
+<div class="container mt-4">
+  <router-outlet></router-outlet>
+</div>
+<main style="min-height: 80vh;">
+  <router-outlet></router-outlet>
+</main>
+
+
+
+<app-footer></app-footer>
   </main>
 </html>
 
