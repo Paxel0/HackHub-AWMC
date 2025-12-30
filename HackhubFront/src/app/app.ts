@@ -1,8 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
-import { NavbarComponent } from './components/navbar/navbar';
-import { FooterComponent } from './components/footer/footer';
+import { NavbarComponent } from './shared/navbar/navbar';
+import { FooterComponent } from './shared/footer/footer';
 @Component({
   selector: 'app-root',
   standalone: true,
