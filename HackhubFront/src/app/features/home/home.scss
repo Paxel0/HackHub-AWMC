@@ -1,0 +1,110 @@
+$bg-color: #0d1117;
+$card-black: #000000;
+$blue-accent: #2563eb;
+$border-color: #21262d;
+
+.home-wrapper {
+  background-color: $bg-color;
+  min-height: 100vh;
+}
+
+.hero-card {
+  background-color: #161b22;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid $border-color;
+  
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: 350px;
+  }
+}
+
+.badge-tech {
+  color: #58a6ff;
+  background: rgba(88, 166, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.filter-bar {
+  background: #161b22;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+}
+
+.hack-card-black {
+  background-color: $card-black !important;
+  border: 1px solid $border-color !important;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: $blue-accent !important;
+  }
+
+  .card-img-top {
+    height: 180px;
+    object-fit: cover;
+  }
+}
+
+.status-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  &.open { background: #238636; color: white; }
+  &.ongoing { background: #d29922; color: black; }
+  &.ended { background: #484f58; color: white; }
+}
+
+.hack-details {
+  font-size: 0.85rem;
+  color: #8b949e;
+  p { margin-bottom: 4px; i { margin-right: 8px; } }
+}
+
+.text-primary-blue { color: #58a6ff; }
+
+.btn-primary { background: $blue-accent; border: none; }
+
+.btn-group-custom {
+  background: #0d1117;
+  padding: 4px;
+  border-radius: 8px;
+  button {
+    background: transparent;
+    border: none;
+    color: #8b949e;
+    padding: 4px 15px;
+    font-size: 0.9rem;
+    &.active {
+      background: #21262d;
+      color: white;
+      border-radius: 6px;
+    }
+  }
+}
+
+.pagination-mock {
+  display: flex;
+  gap: 10px;
+  .page-num, .btn-arrow {
+    background: #161b22;
+    border: 1px solid $border-color;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    &.active { background: $blue-accent; border-color: $blue-accent; }
+  }
+}

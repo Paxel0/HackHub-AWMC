@@ -1,1 +1,104 @@
-<p>home works!</p>
+<div class="home-wrapper">
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark container py-4">
+    <a class="navbar-brand fw-bold" href="#">Hackhub</a>
+    <div class="nav-links d-none d-lg-flex gap-4">
+
+    </div>
+    <button class="btn btn-primary login-btn">Login / Registrati</button>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="container mb-5">
+    <div class="hero-card row g-0 align-items-center">
+      <div class="col-lg-6 h-100">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800" alt="Hero" class="hero-img">
+      </div>
+      <div class="col-lg-6 p-5">
+        <span class="badge-tech">HACKHUB</span>
+        <h1 class="display-4 fw-bold text-white mt-3">Benvenuti su Hackhub.</h1>
+        <p class="lead text-secondary mt-3">
+          La piattaforma principale per <strong>gestire, pianificare, organizzare e partecipare ad</strong> hackathon. 
+          Unisciti ai migliori talenti del mondo e trasforma le tue idee in realtà.
+        </p>
+        <div class="d-flex gap-3 mt-4">
+          <button class="btn btn-primary px-4 py-2">Come funziona?</button>
+        
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter Section -->
+  <section class="container mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-white h4">Prossimi Hackathons</h2>
+      <span class="text-secondary small">Mostrati {{hackathons.length}} Hackathon</span>
+    </div>
+    
+    <div class="filter-bar p-3 mb-4">
+      <div class="row align-items-center g-3">
+        <div class="col-md-5">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-0"><i class="bi bi-search text-secondary"></i></span>
+            <input type="text" class="form-control bg-transparent text-white border-0" placeholder="Ricerca Hackathon...">
+          </div>
+        </div>
+        <div class="col-md-7 d-flex justify-content-md-end gap-2">
+          <div class="btn-group-custom">
+            <button class="active">Tutti</button>
+            <button>Vicini</button>
+            <button>Online</button>
+          </div>
+          <button class="btn btn-outline-secondary btn-sm px-3"><i class="bi bi-filter"></i> Filtri</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Grid -->
+  <section class="container mb-5">
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let hack of hackathons">
+        <div class="card hack-card-black h-100">
+          <div class="position-relative">
+            <img [src]="hack.imageUrl" class="card-img-top" alt="...">
+            <span class="status-badge" [ngClass]="hack.status.toLowerCase()">{{hack.status}}</span>
+          </div>
+          <div class="card-body p-4">
+            <small class="text-primary-blue fw-bold text-uppercase">{{hack.organizer}}</small>
+            <h5 class="card-title text-white mt-1">{{hack.title}}</h5>
+            
+            <div class="hack-details mt-3">
+              <p><i class="bi bi-calendar"></i> {{hack.startDate}} - {{hack.endDate}}</p>
+              <p><i class="bi bi-geo-alt"></i> {{hack.location}}</p>
+              <p><i class="bi bi-people"></i> {{hack.partecipanti}} Partecipanti</p>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top border-dark">
+              <div>
+                <small class="text-secondary d-block">Premio</small>
+                <span class="text-white fw-bold">{{hack.premio}}</span>
+              </div>
+              <button class="btn btn-outline-light btn-sm px-4">Dettagli</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paginator (Mockup come immagine) -->
+  <div class="container d-flex justify-content-center mb-5">
+    <div class="pagination-mock">
+      <button class="btn-arrow">&lt;</button>
+      <button class="page-num active">1</button>
+      <button class="page-num">2</button>
+      <button class="page-num">3</button>
+      <button class="btn-arrow">&gt;</button>
+    </div>
+  </div>
+
+
+  <app-footer></app-footer>
+</div>

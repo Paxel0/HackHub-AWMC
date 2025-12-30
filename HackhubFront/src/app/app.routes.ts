@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
-import { FindHackathon } from './features/find-hackathon/find-hackathon';
+import { HomeComponent } from './features/home/home';
 
 export const routes: Routes = [
-    { path: 'find-hackathon', component: FindHackathon }
-    
+  // Quando il percorso è vuoto, mostra la Home
+  { path: '', component: HomeComponent },
+  // Altri percorsi (per ora lasciamoli stare)
+  { path: 'find-hackathon', component: HomeComponent } 
 ];
