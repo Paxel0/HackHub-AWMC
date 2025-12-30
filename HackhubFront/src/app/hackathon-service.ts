@@ -20,7 +20,7 @@ export interface Hackathon {
 export class HackathonService {
   private http = inject(HttpClient);
 
-  list(): Observable<string> {
-  return this.http.get('/hackathons', { responseType: 'text' });
-}
+  list(): Observable<Hackathon[]> {
+    return this.http.get<Hackathon[]>('/api/hackathons');
+  }
 }
