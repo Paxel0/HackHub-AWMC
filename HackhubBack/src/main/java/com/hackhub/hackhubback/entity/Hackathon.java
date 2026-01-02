@@ -14,26 +14,27 @@ public class Hackathon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
-    private String nome;
+    private String name;
 
-    private String descrizione;
+    private String description;
 
-    private LocalDate dataInizio;
+    private LocalDate startDate;
 
-    private LocalDate dataFine;
+    private LocalDate endDate;
 
     private String location;
 
-    public Hackathon() {
+    protected Hackathon() {
     }
 
-    public Hackathon(String nome, String descrizione, LocalDate dataInizio, LocalDate dataFine, String location) {
-        this.nome = nome;
-        this.descrizione = descrizione;
-        this.dataInizio = dataInizio;
-        this.dataFine = dataFine;
+    public Hackathon(String name, String description, LocalDate startDate, LocalDate endDate, String location) {
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
     }
 
@@ -41,36 +42,36 @@ public class Hackathon {
         return id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String nome) {
+        this.name = nome;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+    public void setDescription(String descrizione) {
+        this.description = descrizione;
     }
 
-    public LocalDate getDataInizio() {
-        return dataInizio;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setDataInizio(LocalDate dataInizio) {
-        this.dataInizio = dataInizio;
+    public void setStartDate(LocalDate dataInizio) {
+        this.startDate = dataInizio;
     }
 
-    public LocalDate getDataFine() {
-        return dataFine;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setDataFine(LocalDate dataFine) {
-        this.dataFine = dataFine;
+    public void setEndDate(LocalDate dataFine) {
+        this.endDate = dataFine;
     }
 
     public String getLocation() {
