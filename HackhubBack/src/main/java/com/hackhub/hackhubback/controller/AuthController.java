@@ -33,8 +33,10 @@ private PasswordEncoder passwordEncoder;
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password errata");
         }
 
-        return ResponseEntity.ok("Login effettuato con successo");
+        return ResponseEntity.ok(
+            new java.util.HashMap<String, String>() {{
+            put("username", user.getUsername());
+            put("role", user.getRole());
+        }});
     }
-    
-    
 }

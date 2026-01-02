@@ -13,6 +13,7 @@ public class User {
 
     private String username;
     private String password;
+    private String role = "utente";
 
     public Long getId() {
         return id;
@@ -33,5 +34,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
+    public String getRole() {
+        return role;
+    }
 }

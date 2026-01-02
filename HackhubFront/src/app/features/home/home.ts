@@ -19,7 +19,7 @@ export class HomeComponent {
       organizer: 'UNICAM INFORMATICA',
       startDate: '15 Ottobre',
       endDate: '18 Ottobre 2024',
-      location: 'Online / Camrino',
+      location: 'Online / Camerino',
       partecipanti: 1420,
       premio: '5000€',
       imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',

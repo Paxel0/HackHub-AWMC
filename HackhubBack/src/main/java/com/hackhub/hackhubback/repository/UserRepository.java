@@ -1,7 +1,9 @@
 package com.hackhub.hackhubback.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.hackhub.hackhubback.entity.User;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository {
+import com.hackhub.hackhubback.entity.User;
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 }
