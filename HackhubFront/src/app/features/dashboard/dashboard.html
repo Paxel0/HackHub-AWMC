@@ -1,1 +1,164 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  
+  <!-- Header Superiore -->
+  <header class="top-bar">
+    <div class="breadcrumb">
+      <span class="subtitle">PANORAMICA</span>
+      <h1>La tua Dashboard</h1>
+    </div>
+    <div class="actions">
+      <button class="btn-icon notification">
+        <i class="fas fa-bell"></i> Notifiche <span class="dot"></span>
+      </button>
+      <button class="btn-primary">
+        + Nuovo Team
+      </button>
+    </div>
+  </header>
+
+  <!-- Griglia delle Statistiche -->
+  <div class="stats-grid">
+    <div class="card stat-card">
+      <div class="card-header-mini">
+        <div class="icon-box blue"><i class="fas fa-code"></i></div>
+        <span class="badge success">+1 questa settimana</span>
+      </div>
+      <p class="label">Hackathon Totali</p>
+      <h3>{{ stats.totalHackathons }}</h3>
+    </div>
+
+    <div class="card stat-card">
+      <div class="card-header-mini">
+        <div class="icon-box orange"><i class="fas fa-clipboard-check"></i></div>
+      </div>
+      <p class="label">Sottomissioni Pendenti</p>
+      <h3>{{ stats.pendingSubmissions }}</h3>
+    </div>
+
+    <div class="card stat-card">
+      <div class="card-header-mini">
+        <div class="icon-box red"><i class="fas fa-stopwatch"></i></div>
+        <span class="badge danger">Urgente</span>
+      </div>
+      <p class="label">Scadenza Imminente</p>
+      <h3>{{ stats.urgentDeadline }}</h3>
+    </div>
+  </div>
+
+  <!-- Layout Principale (2 colonne) -->
+  <div class="main-layout">
+    
+    <!-- Colonna Sinistra: Hackathon Attivo -->
+    <div class="left-column">
+      <div class="section-header">
+        <h4>HACKATHON ATTIVI</h4>
+        <a href="#" class="link">Vedi tutti</a>
+      </div>
+
+      <div class="card active-hackathon-card">
+        <div class="card-bg-image"></div> <!-- Placeholder per l'immagine di sfondo -->
+        <div class="content-overlay">
+          <div class="tags">
+            <span class="tag link">{{ activeHackathon.event }}</span>
+            <span class="tag dark">{{ activeHackathon.type }}</span>
+            <span class="status-badge">● IN CORSO</span>
+          </div>
+          
+          <h2>{{ activeHackathon.title }}</h2>
+          
+          <div class="info-row">
+            <p class="description">{{ activeHackathon.description }}</p>
+            <div class="timer-box">
+              <span class="label">TEMPO RIMASTO</span>
+              <span class="time">{{ activeHackathon.timeLeft }}</span>
+            </div>
+          </div>
+
+          <div class="progress-section">
+            <div class="progress-labels">
+              <span>Stato Progetto</span>
+              <span class="percent">{{ activeHackathon.progress }}% Completato</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" [style.width.%]="activeHackathon.progress"></div>
+              <!-- Marker visivi per gli step -->
+              <div class="step-marker" style="left: 0%"></div>
+              <div class="step-marker" style="left: 33%"></div>
+              <div class="step-marker" style="left: 66%"></div>
+              <div class="step-marker" style="left: 100%"></div>
+            </div>
+            <div class="step-labels">
+              <span>Team</span>
+              <span>Concept</span>
+              <span>Prototipo</span>
+              <span>Invio</span>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div class="team-info">
+              <div class="avatars">
+                <!-- Placeholder avatars -->
+                <div class="avatar" *ngFor="let member of activeHackathon.teamMembers"></div>
+                <div class="avatar count">+2</div>
+              </div>
+              <div class="team-text">
+                <strong>{{ activeHackathon.teamName }}</strong>
+                <span>Team Leader: {{ activeHackathon.teamLeader }}</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn-secondary">Gestisci Team</button>
+              <button class="btn-primary-blue"><i class="fas fa-file-alt"></i> Continua Sottomissione</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonna Destra: Inviti e Attività -->
+    <div class="right-column">
+      
+      <!-- Card Inviti -->
+      <div class="card invite-card">
+        <div class="card-header">
+          <h4><i class="fas fa-envelope"></i> Inviti Pendenti</h4>
+        </div>
+        <div class="invite-item">
+          <div class="invite-avatar">PX</div>
+          <div class="invite-details">
+            <strong>{{ pendingInvite.teamName }}</strong>
+            <p>Ti ha invitato come: <br> {{ pendingInvite.role }}</p>
+          </div>
+        </div>
+        <div class="invite-actions">
+          <button class="btn-accept" (click)="acceptInvite()">Accetta</button>
+          <button class="btn-refuse" (click)="declineInvite()">Rifiuta</button>
+        </div>
+      </div>
+
+      <!-- Card Attività -->
+      <div class="card activity-card">
+        <div class="card-header">
+          <h4><i class="fas fa-history"></i> Attività Recente</h4>
+        </div>
+        <ul class="activity-list">
+          <li *ngFor="let activity of activities" class="activity-item">
+            <div class="timeline-dot"></div>
+            <div class="activity-content">
+              <p>
+                <strong>{{ activity.user }}</strong> {{ activity.text }} 
+                <span class="highlight" *ngIf="activity.project">{{ activity.project }}</span>
+              </p>
+              <span class="time">{{ activity.time }}</span>
+            </div>
+          </li>
+        </ul>
+        <div class="card-footer-link">
+          <a href="#">VEDI TUTTA LA CRONOLOGIA</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

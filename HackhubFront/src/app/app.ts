@@ -3,16 +3,18 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
 import { NavbarComponent } from './shared/navbar/navbar';
 import { FooterComponent } from './shared/footer/footer';
+import { Dashboard } from "./features/dashboard/dashboard";
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, 
-    RouterLinkWithHref, 
-    HttpClientModule, 
+    RouterOutlet,
+    RouterLinkWithHref,
+    HttpClientModule,
     NavbarComponent,
-    FooterComponent
-  ],
+    FooterComponent,
+    Dashboard
+],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
