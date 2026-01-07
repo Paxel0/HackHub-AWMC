@@ -12,9 +12,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-            .formLogin(form -> form.disable());
+                .csrf(csrf -> csrf.disable()) // Necessario per Angular
+                .authorizeHttpRequests(auth -> auth
+                        // Lascia passare le richieste di login (pubbliche)
+                        // Aggiusta "/auth/login" in base al RequestMapping del tuo Controller
+                        .requestMatchers("/login", "/error").permitAll()
+                        // Blocca tutto il resto se l'utente non è autenticato
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form.disable()); // Disabilita form di default
+
         return http.build();
     }
 }

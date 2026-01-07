@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RestController
 public class AuthController {
@@ -33,10 +36,11 @@ private PasswordEncoder passwordEncoder;
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password errata");
         }
 
-        return ResponseEntity.ok(
-            new java.util.HashMap<String, String>() {{
-            put("username", user.getUsername());
-            put("role", user.getRole());
-        }});
+
+        Map<String, String> body = new HashMap<>();
+        body.put("username", user.getUsername());
+        body.put("role", user.getRole() == null ? "" : user.getRole());
+
+        return ResponseEntity.ok(body);
     }
 }
