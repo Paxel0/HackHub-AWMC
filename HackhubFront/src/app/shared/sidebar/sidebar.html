@@ -1,49 +1,30 @@
-<div class="sidebar border-end">
-  <div class="sidebar-header border-bottom">
-    <div class="sidebar-brand">CoreUI</div>
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <span class="logo" *ngIf="! isCollapsed">🚀 HACKHUB</span>
+    <span class="logo-mini" *ngIf="isCollapsed">🚀</span>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'"></i>
+    </button>
   </div>
-  <ul class="sidebar-nav">
-    <li class="nav-title">Nav Title</li>
-    <li class="nav-item">
-      <a class="nav-link active" href="#">
-        <i class="nav-icon cil-speedometer"></i> Nav item
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">
-        <i class="nav-icon cil-speedometer"></i> With badge
-        <span class="badge bg-primary ms-auto">NEW</span>
-      </a>
-    </li>
-    <li class="nav-item nav-group show">
-      <a class="nav-link nav-group-toggle" href="#">
-        <i class="nav-icon cil-puzzle"></i> Nav dropdown
-      </a>
-      <ul class="nav-group-items">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="nav-icon"><span class="nav-icon-bullet"></span></span> Nav dropdown item
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="nav-icon"><span class="nav-icon-bullet"></span></span> Nav dropdown item
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-item mt-5">
-      <a class="nav-link" href="https://coreui.io">
-        <i class="nav-icon cil-cloud-download"></i> Download CoreUI</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="https://coreui.io/pro/">
-        <i class="nav-icon cil-layers"></i> Try CoreUI
-        <strong>PRO</strong>
-      </a>
-    </li>
-  </ul>
-  <div class="sidebar-footer border-top d-flex">
-    <button class="sidebar-toggler" type="button"></button>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li *ngFor="let item of menuItems" class="nav-item">
+        <a [routerLink]="item.route" 
+           routerLinkActive="active" 
+           [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+           class="nav-link">
+          <i class="bi" [ngClass]="item.icon"></i>
+          <span class="nav-text" *ngIf="!isCollapsed">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a routerLink="/" class="nav-link logout-link">
+      <i class="bi bi-box-arrow-left"></i>
+      <span class="nav-text" *ngIf="!isCollapsed">Esci</span>
+    </a>
   </div>
-</div>
+</aside>

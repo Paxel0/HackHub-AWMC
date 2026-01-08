@@ -1,26 +1,27 @@
 import { Component } from '@angular/core';
+import { RouterLinkWithHref, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, RouterModule],
+  standalone: true,
+  imports: [CommonModule, RouterLinkWithHref, RouterLinkActive],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.scss',
+  styleUrl: './sidebar.scss'
 })
 export class Sidebar {
-  // Metodo per gestire il toggle dei menu a tendina (dropdown)
-  toggleGroup(event: Event) {
-    event.preventDefault();
-    const element = event.currentTarget as HTMLElement;
-    const parent = element.parentElement;
-    
-    if (parent?.classList.contains('nav-group')) {
-      parent.classList.toggle('show');
-    }
-  } 
+  isCollapsed = false;
 
-  // Metodo per il pulsante di chiusura sidebar (mobile)
   toggleSidebar() {
-    document.body.classList.toggle('sidebar-show');
+    this.isCollapsed = !this.isCollapsed;
   }
+
+  menuItems = [
+    { label: 'Dashboard', icon: 'bi-speedometer2', route: '/dashboard' },
+    { label: 'Il mio team', icon: 'bi-trophy', route: '/dashboard/team' },
+    { label: 'Esplora Hackathon', icon: 'bi-compass', route: '/dashboard/explore-hackathons' },
+    { label: 'I miei premi', icon: 'bi-people', route: '/dashboard/prizes' },
+    { label: 'Profilo', icon: 'bi-person-circle', route: '/dashboard/profile' },
+    { label: 'Impostazioni', icon: 'bi-gear', route: '/dashboard/settings' }
+  ];
 }

@@ -1,96 +1,75 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [RouterOutlet, CommonModule, Sidebar],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss',
+  styleUrl: './dashboard.scss'
 })
-export class Dashboard implements OnInit, OnDestroy {
-  // Dati utente
-  user = {
-    name: 'Alex',
-    role: 'Full Stack Dev',
-    avatar: 'assets/avatar-placeholder.png' // Sostituisci con il percorso reale se c'è
-  };
-
-  // Statistiche
+export class Dashboard {
+  // Stats cards data
   stats = {
-    totalHackathons: 12,
-    pendingSubmissions: 1,
-    urgentDeadline: '48h : 12m'
+    hackathonTotali: 12,
+    sottomissioniPendenti: 1,
+    scadenzaOre: 48,
+    scadenzaMinuti: 12
   };
 
-  // Hackathon Attivo
-  activeHackathon = {
-    title: 'Neural Network Optimization',
-    event: 'GLOBAL AI CHALLENGE 2024',
-    type: 'ONLINE',
-    description: 'Sviluppa un algoritmo AI capace di ottimizzare il consumo energetico delle server farm in tempo reale.',
-    timeLeft: '48 : 12 : 30',
-    progress: 75, // Percentuale completamento
-    teamName: 'Neural Ninjas',
-    teamLeader: 'Alex',
-    teamMembers: [1, 2, 3] // Placeholder per avatar
+  // Hackathon attivo
+  hackathonAttivo = {
+    tag: 'GLOBAL AI CHALLENGE 2024',
+    tipo: 'ONLINE',
+    stato: 'IN CORSO',
+    titolo: 'Neural Network Optimization',
+    descrizione: 'Sviluppa un algoritmo AI capace di ottimizzare il consumo energetico delle server farm in tempo reale.',
+    tempoRimasto: { ore: 48, minuti: 12, secondi: 30 },
+    progresso: 75,
+    team: {
+      nome: 'Neural Ninjas',
+      leader: 'Alex',
+      membri: [
+        'assets/avatar1.png',
+        'assets/avatar2.png',
+        'assets/avatar3.png'
+      ],
+      altriMembri: 2
+    }
   };
 
-  // Inviti
-  pendingInvite = {
-    teamName: 'Pixel Pioneers',
-    role: 'Designer',
-    from: 'Sarah'
-  };
-
-  // Attività Recente
-  activities = [
-    { type: 'upload', user: 'Sarah', text: 'ha caricato nuovi mockup per', project: 'Neural Ninjas', time: '10 minuti fa' },
-    { type: 'comment', user: 'Mentor Dave', text: 'Nuovo commento da', project: 'sul progetto', time: '2 ore fa' },
-    { type: 'system', user: 'System', text: 'Il tuo team Code Crushers è stato registrato a HackRome 24.', project: '', time: 'Ieri' },
-    { type: 'update', user: 'System', text: 'Aggiornamento regole per Global AI Challenge.', project: '', time: '2 giorni fa' }
+  // Inviti pendenti
+  invitiPendenti = [
+    {
+      iniziali: 'PX',
+      team: 'Pixel Pioneers',
+      ruolo: 'Designer'
+    }
   ];
 
-  private timerInterval: any;
-
-  ngOnInit() {
-    this.startTimer();
-  }
-
-  ngOnDestroy() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+  // Attività recente
+  attivitaRecente = [
+    {
+      colore: 'blue',
+      testo: '<strong>Sarah</strong> ha caricato nuovi mockup per <a href="#">Neural Ninjas</a>',
+      tempo: '10 minuti fa'
+    },
+    {
+      colore: 'gray',
+      testo: 'Nuovo commento da <strong>Mentor Dave</strong> sul progetto.',
+      tempo: '2 ore fa'
+    },
+    {
+      colore:  'orange',
+      testo: 'Il tuo team <strong>Code Crushers</strong> è stato registrato a HackRome 24.',
+      tempo: 'Ieri'
+    },
+    {
+      colore:  'gray',
+      testo: 'Aggiornamento regole per <strong>Global AI Challenge</strong>.',
+      tempo: '2 giorni fa'
     }
-  }
-
-  startTimer() {
-    // Simulazione semplice di un countdown per l'effetto visivo
-    let seconds = 30;
-    let minutes = 12;
-    let hours = 48;
-
-    this.timerInterval = setInterval(() => {
-      seconds--;
-      if (seconds < 0) {
-        seconds = 59;
-        minutes--;
-      }
-      if (minutes < 0) {
-        minutes = 59;
-        hours--;
-      }
-      // Formatta come HH : MM : SS
-      this.activeHackathon.timeLeft = `${hours} : ${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
-    }, 1000);
-  }
-
-  acceptInvite() {
-    console.log('Invito accettato');
-    // Logica per accettare l'invito
-  }
-
-  declineInvite() {
-    console.log('Invito rifiutato');
-    // Logica per rifiutare l'invito
-  }
+  ];
 }
