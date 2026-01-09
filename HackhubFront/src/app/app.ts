@@ -20,6 +20,7 @@ import { filter } from 'rxjs/operators';
 export class App {
   protected readonly title = signal('FrontEnd');
   showSidebar = signal(false);
+  showFooter = signal(true);
 
   constructor(private router: Router) {
     // Ascolta i cambiamenti di rotta
@@ -28,9 +29,12 @@ export class App {
     ).subscribe((event: NavigationEnd) => {
       // Mostra la sidebar solo nelle rotte che iniziano con /dashboard
       this.showSidebar.set(event.urlAfterRedirects.startsWith('/dashboard'));
+      // Nascondi il footer nella login
+      this.showFooter.set(!event.urlAfterRedirects.startsWith('/login'));
     });
 
     // Controlla la rotta iniziale
     this.showSidebar.set(this.router.url.startsWith('/dashboard'));
+    this.showFooter.set(!this.router.url.startsWith('/login'));
   }
 }
