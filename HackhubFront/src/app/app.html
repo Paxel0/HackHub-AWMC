@@ -1,5 +1,9 @@
 <html>
+  @if (showSidebar()) {
+    <app-sidebar></app-sidebar>
+  }
+  
   <main>
-
-<!--Dashboard -->
-<router-outlet></router-outlet> 
+<router-outlet></router-outlet> </main>
+<app-footer></app-footer>
+</html>
