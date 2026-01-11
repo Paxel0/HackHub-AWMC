@@ -1,19 +1,31 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <h3>Login</h3>
-      <form (ngSubmit)="onLogin()">
-        <div class="mb-3">
-          <label class="form-label">Username</label>
-          <input type="text" name="username" class="form-control" [(ngModel)]="credentials.username" required>
+<div class="login-page">
+
+
+  <!-- Login Form -->
+  <div class="login-content">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+          <div class="login-card">
+            <h3 class="text-center mb-4">Accedi al tuo account</h3>
+            <form (ngSubmit)="onLogin()">
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" [(ngModel)]="credentials.username" required placeholder="Inserisci username">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" [(ngModel)]="credentials.password" required placeholder="Inserisci password">
+              </div>
+              <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+              <button type="submit" class="btn btn-primary w-100 py-2">Accedi</button>
+            </form>
+            <div class="text-center mt-3">
+              <small class="text-secondary">Non hai un account? <a routerLink="/" class="text-primary-blue">Registrati</a></small>
+            </div>
+          </div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" name="password" class="form-control" [(ngModel)]="credentials.password" required>
-        </div>
-        <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-        <button type="submit" class="btn btn-success w-100">Accedi</button>
-      </form>
+      </div>
     </div>
   </div>
 </div>

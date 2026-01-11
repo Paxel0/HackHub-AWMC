@@ -1,0 +1,108 @@
+$bg-color: #0d1117;
+$card-bg: #161b22;
+$border-color: #21262d;
+$text-primary: #ffffff;
+$text-secondary: #8b949e;
+$blue-accent: #2563eb;
+$input-bg: #21262d;
+
+.login-page {
+  background-color: $bg-color;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  .navbar-brand {
+    color: $text-primary;
+    font-size: 1.5rem;
+    
+    &:hover {
+      color: $blue-accent;
+    }
+  }
+}
+
+.login-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 3rem 1rem;
+}
+
+.login-card {
+  background-color: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+  color: $text-primary !important;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-label {
+  color: $text-primary !important;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-control {
+  background-color: $input-bg !important;
+  border: 1px solid $border-color;
+  color: $text-primary !important;
+  padding: 0.75rem;
+  border-radius: 8px;
+
+  &:focus {
+    background-color: $input-bg !important;
+    border-color: $blue-accent;
+    color: $text-primary !important;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+  }
+
+  &::placeholder {
+    color: $text-secondary;
+  }
+}
+
+.btn-primary {
+  background-color: $blue-accent;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+  }
+}
+
+.text-primary-blue {
+  color: #58a6ff;
+  text-decoration: none;
+  
+  &:hover {
+    color: $blue-accent;
+    text-decoration: underline;
+  }
+}
+
+.text-secondary {
+  color: $text-secondary;
+}
+
+.alert-danger {
+  background-color: rgba(248, 81, 73, 0.1);
+  border: 1px solid #f85149;
+  color: #f85149;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}

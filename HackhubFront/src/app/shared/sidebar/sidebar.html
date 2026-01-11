@@ -1,0 +1,30 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <span class="logo" *ngIf="! isCollapsed">🚀 HACKHUB</span>
+    <span class="logo-mini" *ngIf="isCollapsed">🚀</span>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li *ngFor="let item of menuItems" class="nav-item">
+        <a [routerLink]="item.route" 
+           routerLinkActive="active" 
+           [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+           class="nav-link">
+          <i class="bi" [ngClass]="item.icon"></i>
+          <span class="nav-text" *ngIf="!isCollapsed">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a routerLink="/" class="nav-link logout-link">
+      <i class="bi bi-box-arrow-left"></i>
+      <span class="nav-text" *ngIf="!isCollapsed">Esci</span>
+    </a>
+  </div>
+</aside>

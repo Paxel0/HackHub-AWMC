@@ -4,6 +4,7 @@ import { Hackathon } from '../../core/models/hackathon';
 // Importiamo il tuo footer dalla cartella shared
 import { FooterComponent } from '../../shared/footer/footer'; 
 import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   standalone: true,

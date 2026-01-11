@@ -1,2 +1,14 @@
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+// Reset globale
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100%;
+  background-color: #0d1117 !important;
+}
+
+body {
+  overflow-x: hidden;
+}

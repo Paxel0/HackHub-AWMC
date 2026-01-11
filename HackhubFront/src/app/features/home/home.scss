@@ -5,7 +5,8 @@ $border-color: #21262d;
 
 .home-wrapper {
   background-color: $bg-color;
-  min-height: 100vh;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .hero-card {
