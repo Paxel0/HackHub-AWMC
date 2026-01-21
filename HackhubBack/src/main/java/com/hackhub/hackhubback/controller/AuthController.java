@@ -1,5 +1,9 @@
 package com.hackhub.hackhubback.controller;
 
+import com.hackhub.hackhubback.security.JwtUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hackhub.hackhubback.DTO.LoginRequest;
@@ -19,15 +23,24 @@ import java.util.Map;
 
 @RestController
 public class AuthController {
-    @Autowired
-private UserService userService;
-@Autowired
-private PasswordEncoder passwordEncoder;
+
+    private final JwtUtils jwtUtils;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
+    // Rimosso AuthenticationManager perché non usato nella logica manuale qui sotto
+    public AuthController(JwtUtils jwtUtils, UserService userService, PasswordEncoder passwordEncoder) {
+        this.jwtUtils = jwtUtils;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-        
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+
+        // Verifica che userService non ritorni null o lanci eccezioni
         User user = userService.findIdByUsername(loginRequest.getUsername());
+
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utente non trovato");
         }
@@ -36,11 +49,16 @@ private PasswordEncoder passwordEncoder;
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Password errata");
         }
 
+        // Genera il token
+        String token = jwtUtils.generateToken(user.getUsername());
 
         Map<String, String> body = new HashMap<>();
+        body.put("token", token);
         body.put("username", user.getUsername());
         body.put("role", user.getRole() == null ? "" : user.getRole());
 
-        return ResponseEntity.ok(body);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .body(body);
     }
 }

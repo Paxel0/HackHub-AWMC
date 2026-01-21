@@ -16,12 +16,11 @@ public class DataSeeder {
             String username = "admin";
             String rawPassword = "admin123";
 
-            // H2 in-memory: ad ogni avvio è vuoto, quindi reinseriamo l'utente se non c'è.
+            // Se l'utente non esiste nel DB (utile al primo avvio su un DB nuovo), lo creiamo.
             if (userRepository.findByUsername(username).isEmpty()) {
                 User u = new User();
                 u.setUsername(username);
                 u.setPassword(passwordEncoder.encode(rawPassword));
-                // Assicurati che il ruolo sia gestito (es. default nella entity o settato qui)
                 u.setRole("utente");
                 userRepository.save(u);
                 System.out.println("Utente admin creato con successo.");
