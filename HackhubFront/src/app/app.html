@@ -4,6 +4,9 @@
   }
   
   <main>
-<router-outlet></router-outlet> </main>
-<app-footer></app-footer>
+    <router-outlet></router-outlet>
+  </main>
+  @if (showFooter()) {
+    <app-footer></app-footer>
+  }
 </html>

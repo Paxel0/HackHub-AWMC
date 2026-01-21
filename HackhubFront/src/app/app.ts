@@ -1,8 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { Router, RouterOutlet, RouterLinkWithHref, NavigationEnd } from '@angular/router';
 import { FooterComponent } from './shared/footer/footer';
-import { Sidebar } from './shared/sidebar/sidebar';
-import { Dashboard } from "./features/dashboard/dashboard";
+import { Sidebar, SIDEBAR_ROUTES } from './shared/sidebar/sidebar';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -11,8 +10,7 @@ import { filter } from 'rxjs/operators';
   imports: [
     RouterOutlet,
     FooterComponent,
-    Sidebar,
-    Dashboard
+    Sidebar
 ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -27,14 +25,16 @@ export class App {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      // Mostra la sidebar solo nelle rotte che iniziano con /dashboard
-      this.showSidebar.set(event.urlAfterRedirects.startsWith('/dashboard'));
-      // Nascondi il footer nella login
-      this.showFooter.set(!event.urlAfterRedirects.startsWith('/login'));
+      this.updateLayoutFlags(event.urlAfterRedirects);
     });
 
     // Controlla la rotta iniziale
-    this.showSidebar.set(this.router.url.startsWith('/dashboard'));
-    this.showFooter.set(!this.router.url.startsWith('/login'));
+    this.updateLayoutFlags(this.router.url);
+  }
+
+  private updateLayoutFlags(url: string) {
+    const isSidebarRoute = SIDEBAR_ROUTES.some(route => url.startsWith(route));
+    this.showSidebar.set(isSidebarRoute);
+    this.showFooter.set(!url.startsWith('/login'));
   }
 }
