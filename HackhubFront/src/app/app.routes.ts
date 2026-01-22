@@ -7,17 +7,18 @@ import { ExploreHackathonsComponent } from './features/explore-hackathons/explor
 import { PrizesComponent } from './features/prizes/prizes';
 import { ProfileComponent } from './features/profile/profile';
 import { SettingsComponent } from './features/settings/settings';
+import { authGuard } from './core/guards/auth-guard'; // Importa la tua guardia
 
 export const routes: Routes = [
   // Quando il percorso è vuoto, mostra la Home
   { path: '', component: HomeComponent },
  
-  { path: 'dashboard', component: Dashboard },
-  { path: 'team', component: TeamComponent },
-  { path: 'explore-hackathons', component: ExploreHackathonsComponent },
-  { path: 'prizes', component: PrizesComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'settings', component: SettingsComponent },
+  { path: 'dashboard', component: Dashboard /*, canActivate: [authGuard] */},
+  { path: 'team', component: TeamComponent, canActivate: [authGuard] },
+  { path: 'explore-hackathons', component: ExploreHackathonsComponent /*, canActivate: [authGuard] */},
+  { path: 'prizes', component: PrizesComponent, canActivate: [authGuard] },
+  { path: 'profile', component: ProfileComponent , canActivate: [authGuard]},
+  { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
  
   // Aggiunto percorso per la pagina di login
   { path: 'login', component: Login }

@@ -17,17 +17,19 @@ export class Login {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin() {
-    this.authService.login(this.credentials).subscribe({
-      next: (response) => {
-        console.log('Login effettuato!', response);
-        // Salva il token se presente (es. localStorage.setItem('token', response.token))
-        this.router.navigate(['/dashboard']); // Naviga verso una pagina protetta
-      },
-      error: (err) => {
-        this.errorMessage = 'Credenziali non valide o errore di server';
-        console.error(err);
+ 
+onLogin() {
+  this.authService.login(this.credentials).subscribe({
+    next: (response) => {
+      // 1. IMPLEMENTARE QUESTO: Salva il token
+      if (response.token) {
+        localStorage.setItem('authToken', response.token);
       }
-    });
-  }
+      
+      this.router.navigate(['/dashboard']);
+    },
+    error: (err) => { /* gestione errori */ }
+  });
+}
+
 }
