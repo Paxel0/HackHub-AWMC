@@ -1,13 +1,113 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Hackathon } from '../../core/models/hackathon';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-explore-hackathons',
   standalone: true,
-  template: `
-    <section class="page-shell">
-      <h1>Esplora gli hackathon</h1>
-      <p>Scopri sfide aperte e filtra quelle più adatte al tuo team.</p>
-    </section>
-  `
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: './explore-hackathons.html',
+  styleUrls: ['./explore-hackathons.scss']
 })
-export class ExploreHackathonsComponent {}
+export class ExploreHackathonsComponent implements OnInit {
+  searchTerm: string = '';
+  
+  // Dati di esempio (coerenti con la Home)
+  allHackathons: Hackathon[] = [
+    {
+      id: 1,
+      title: 'AI 2024',
+      organizer: 'UNICAM INFORMATICA',
+      startDate: '15 Ottobre',
+      endDate: '18 Ottobre 2024',
+      location: 'Online / Camerino',
+      partecipanti: 1420,
+      premio: '5000€',
+      imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
+      status: 'Aperto'
+    },
+    {
+      id: 2,
+      title: 'GreenTech Summit',
+      organizer: 'ECOGLOBAL',
+      startDate: '01 Novembre',
+      endDate: '03 Novembre 2024',
+      location: 'Rome, Italy',
+      partecipanti: 350,
+      premio: '400€',
+      imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800',
+      status: 'In corso'
+    },
+    {
+      id: 3,
+      title: 'CISCO',
+      organizer: 'FAUSTO MARCANTONI',
+      startDate: '10 Dicembre',
+      endDate: '12 Dicembre 2024',
+      location: 'Camerino',
+      partecipanti: 800,
+      premio: '30L',
+      imageUrl: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800',
+      status: 'Aperto'
+    },
+    {
+      id: 4,
+      title: 'Health Data Sprint',
+      organizer: 'MEDTECH INC',
+      startDate: '20 Settembre',
+      endDate: '22 Settembre 2024',
+      location: 'Milano',
+      partecipanti: 210,
+      premio: '25,000€',
+      imageUrl: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800',
+      status: 'Chiuso'
+    },
+    {
+      id: 5,
+      title: 'Backend Builders',
+      organizer: 'Bonura',
+      startDate: '05 Gennaio',
+      endDate: '10 Gennaio 2025',
+      location: 'Online',
+      partecipanti: 500,
+      premio: '10,000€',
+      imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800',
+      status: 'Aperto'
+    },
+    {
+      id: 6,
+      title: 'VR/AR Creator Fest',
+      organizer: 'METAVERSE CO',
+      startDate: '15 Novembre',
+      endDate: '20 Novembre 2024',
+      location: 'Macerata',
+      partecipanti: 300,
+      premio: '75,000€',
+      imageUrl: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=800',
+      status: 'Aperto'
+    }
+  ];
+
+  filteredHackathons: Hackathon[] = [];
+
+  ngOnInit() {
+    // Inizialmente mostra tutti gli hackathon
+    this.filteredHackathons = this.allHackathons;
+  }
+
+  filterHackathons() {
+    if (!this.searchTerm) {
+      this.filteredHackathons = this.allHackathons;
+      return;
+    }
+
+    const term = this.searchTerm.toLowerCase();
+    this.filteredHackathons = this.allHackathons.filter(h => 
+      h.title.toLowerCase().includes(term) ||
+      h.organizer.toLowerCase().includes(term) ||
+      h.location.toLowerCase().includes(term)
+    );
+  }
+}
