@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Hackathon } from '../../core/models/hackathon';
 // Importiamo il tuo footer dalla cartella shared
 import { FooterComponent } from '../../shared/footer/footer'; 
@@ -8,11 +9,14 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FooterComponent, RouterLink], 
+  imports: [CommonModule, FooterComponent, RouterLink, FormsModule], 
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  searchTerm: string = '';
+  filteredHackathons: Hackathon[] = [];
+
   hackathons: Hackathon[] = [
     {
       id: 1,
@@ -87,4 +91,22 @@ export class HomeComponent {
       status: 'Aperto'
     }
   ];
+
+  ngOnInit() {
+    this.filteredHackathons = this.hackathons;
+  }
+
+  filterHackathons() {
+    if (!this.searchTerm) {
+      this.filteredHackathons = this.hackathons;
+      return;
+    }
+
+    const term = this.searchTerm.toLowerCase();
+    this.filteredHackathons = this.hackathons.filter(h => 
+      h.title.toLowerCase().includes(term) ||
+      h.organizer.toLowerCase().includes(term) ||
+      h.location.toLowerCase().includes(term)
+    );
+  }
 }

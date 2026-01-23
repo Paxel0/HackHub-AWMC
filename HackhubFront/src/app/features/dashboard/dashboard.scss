@@ -109,18 +109,17 @@
     }
     
     &.blue {
-      background: rgba(59, 130, 246, 0.2);
-      color: #3b82f6;
+      background: rgba(2, 240, 18, 0.358);
+      
     }
     
     &.orange {
-      background: rgba(249, 115, 22, 0.2);
-      color: #f97316;
+      background: rgba(249, 116, 22, 0.479);
+     
     }
     
     &.red {
-      background: rgba(239, 68, 68, 0.2);
-      color: #ef4444;
+      background: rgba(239, 68, 68, 0.537);
     }
   }
   
@@ -157,37 +156,15 @@
   }
 }
 
-// Content Grid
-.content-grid {
-  display: grid;
-  grid-template-columns:  1fr 350px;
-  gap: 25px;
-}
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  
   h3 {
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     letter-spacing: 1px;
-    margin: 0;
+    margin: 1rem;
   }
   
-  .link-vedi-tutti {
-    color: #3b82f6;
-    text-decoration: none;
-    font-size: 0.85rem;
-    
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
+  
 // Hackathon Card
 .hackathon-card {
   background: #12121a;
@@ -381,18 +358,7 @@
     display: flex;
     gap: 10px;
     
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid #3b4a5a;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      
-      &:hover {
-        background: #1a1a2e;
-      }
-    }
+   
     
     .btn-primary {
       background: #3b82f6;
@@ -412,181 +378,10 @@
   }
 }
 
-// Right Column Cards
-.right-column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 
-.card-inviti, .card-attivita {
-  background: #12121a;
-  border: 1px solid #1e1e2e;
-  border-radius: 16px;
-  padding: 20px;
-  
-  .card-title {
-    color: #fff;
-    font-weight: 600;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap:  10px;
-    
-    i {
-      color: #6b7280;
-    }
-  }
-}
 
-.invito-item {
-  display:  flex;
-  align-items:  center;
-  gap: 15px;
-  
-  .invito-avatar {
-    width:  45px;
-    height: 45px;
-    border-radius:  50%;
-    background: #7c3aed;
-    color: #fff;
-    display:  flex;
-    align-items:  center;
-    justify-content:  center;
-    font-weight:  600;
-  }
-  
-  .invito-info {
-    flex: 1;
-    
-    strong {
-      color: #fff;
-      display: block;
-    }
-    
-    span {
-      color: #6b7280;
-      font-size: 0.8rem;
-    }
-  }
-  
-  .invito-actions {
-    display: flex;
-    gap: 10px;
-    
-    .btn-accetta {
-      background:  transparent;
-      border: 1px solid #3b82f6;
-      color: #3b82f6;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      
-      &:hover {
-        background: rgba(59, 130, 246, 0.1);
-      }
-    }
-    
-    .btn-rifiuta {
-      background: #1e1e2e;
-      border: none;
-      color: #9ca3af;
-      padding:  8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      
-      &:hover {
-        background: #2a2a3e;
-      }
-    }
-  }
-}
 
-// Attività
-.attivita-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 
-.attivita-item {
-  display: flex;
-  gap: 15px;
-  
-  .attivita-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-top: 5px;
-    flex-shrink: 0;
-    
-    &.blue { background: #3b82f6; }
-    &.gray { background: #6b7280; }
-    &.orange { background: #f97316; }
-  }
-  
-  .attivita-content {
-    p {
-      color: #d1d5db;
-      margin: 0 0 5px;
-      font-size:  0.9rem;
-      
-      strong {
-        color: #fff;
-      }
-      
-      a {
-        color: #3b82f6;
-        text-decoration: none;
-      }
-    }
-    
-    .attivita-tempo {
-      color: #6b7280;
-      font-size: 0.75rem;
-    }
-  }
-}
 
-.link-cronologia {
-  display: block;
-  text-align: right;
-  color: #6b7280;
-  font-size: 0.75rem;
-  text-decoration: none;
-  margin-top: 20px;
-  letter-spacing: 0.5px;
-  
-  &:hover {
-    color: #3b82f6;
-  }
-}
 
-// Responsive
-@media (max-width: 1200px) {
-  .content-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .right-column {
-    flex-direction: row;
-    
-    .card-inviti, .card-attivita {
-      flex: 1;
-    }
-  }
-}
 
-@media (max-width: 768px) {
-  .dashboard-content {
-    margin-left: 70px;
-  }
-  
-  .stats-row {
-    grid-template-columns: 1fr;
-  }
-  
-  .right-column {
-    flex-direction: column;
-  }
-}
