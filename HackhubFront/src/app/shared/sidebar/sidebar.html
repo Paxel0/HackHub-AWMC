@@ -22,9 +22,9 @@
   </nav>
 
   <div class="sidebar-footer">
-    <a routerLink="/" class="nav-link logout-link">
+    <button type="button" class="nav-link logout-link" (click)="onLogout()">
       <i class="bi bi-box-arrow-left"></i>
       <span class="nav-text" *ngIf="!isCollapsed">Esci</span>
-    </a>
+    </button>
   </div>
 </aside>

@@ -6,12 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  // L'URL punta a /api, che il proxy girerà a http://localhost:8080/api/login
-  private loginUrl = '/login'; 
+  // Usa il prefisso /api per passare dal proxy a http://localhost:8080/api/login
+  private loginUrl = '/api/login'; 
 
   constructor(private http: HttpClient) { }
 
   login(credentials: { username: string, password: string }): Observable<any> {
     return this.http.post(this.loginUrl, credentials);
+  }
+
+  logout(): void {
+    // Elimina il token salvato per invalidare la sessione lato client
+    localStorage.removeItem('authToken');
   }
 }

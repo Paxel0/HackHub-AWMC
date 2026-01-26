@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Hackathon } from '../../core/models/hackathon';
-// Importiamo il tuo footer dalla cartella shared
-import { FooterComponent } from '../../shared/footer/footer'; 
+ 
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FooterComponent, RouterLink, FormsModule], 
+  imports: [CommonModule, RouterLink, FormsModule], 
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })

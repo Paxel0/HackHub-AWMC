@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterLinkWithHref, RouterLinkActive } from '@angular/router';
+import { Router, RouterLinkWithHref, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../core/services/auth.service';
 
 export const SIDEBAR_MENU_ITEMS = [
   { label: 'Dashboard', icon: 'bi-speedometer2', route: '/dashboard' },
@@ -23,9 +24,16 @@ export const SIDEBAR_ROUTES = SIDEBAR_MENU_ITEMS.map(item => item.route);
 export class Sidebar {
   isCollapsed = false;
 
+  constructor(private auth: AuthService, private router: Router) {}
+
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
 
   menuItems = SIDEBAR_MENU_ITEMS;
+
+  onLogout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
+  }
 }
