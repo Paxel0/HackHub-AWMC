@@ -48,9 +48,18 @@ $accent-hover: #2563eb;
   border: 1px solid $border-color;
 
   input::placeholder {
-    color: #ffffff;
-     font-size: 1rem;
-    opacity: 0.7; // Un po' di trasparenza per non confonderlo con il testo
+    color: $text-secondary;
+  }
+}
+
+// Card stile (aggiunto hover per link)
+.hackathon-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -134,7 +143,7 @@ $accent-hover: #2563eb;
       backdrop-filter: blur(4px);
 
       &.aperto { background: rgba(34, 197, 94, 0.9); color: white; }
-      &.in.corso { background: rgba(234, 179, 8, 0.9); color: black; }
+      &.in-corso { background: rgba(234, 179, 8, 0.9); color: black; }
       &.chiuso { background: rgba(75, 85, 99, 0.9); color: white; }
     }
   }

@@ -38,41 +38,45 @@
     <!-- Griglia Hackathon (Stile Home) -->
     <div class="row g-4">
       <div class="col-md-4" *ngFor="let hack of filteredHackathons">
-        <div class="card h-100 border-0" style="background-color: #12121a; border-radius: 16px; overflow: hidden;">
-          <!-- Immagine con badge -->
-          <div class="position-relative">
-            <img [src]="hack.imageUrl" class="w-100" alt="{{hack.title}}" style="height: 200px; object-fit: cover;">
-            <span class="position-absolute top-0 end-0 m-3 badge rounded-pill"
-                  [ngClass]="{
-                    'bg-success': hack.status === 'Aperto',
-                    'bg-warning text-dark': hack.status === 'In corso',
-                    'bg-secondary': hack.status === 'Chiuso'
-                  }">
-              {{hack.status}}
-            </span>
-          </div>
+        <a [routerLink]="['/explore-hackathons', hack.id]" class="text-decoration-none">
+          <div class="card h-100 border-0 hackathon-card" style="background-color: #12121a; border-radius: 16px; overflow: hidden;">
+            <!-- Immagine con badge -->
+            <div class="position-relative">
+              <img [src]="hack.imageUrl" class="w-100" alt="{{hack.title}}" style="height: 200px; object-fit: cover;">
+              <span class="position-absolute top-0 end-0 m-3 badge rounded-pill"
+                    [ngClass]="{
+                      'bg-success': hack.status === 'Aperto',
+                      'bg-warning text-dark': hack.status === 'In corso',
+                      'bg-secondary': hack.status === 'Chiuso'
+                    }">
+                {{hack.status}}
+              </span>
+            </div>
 
-          <!-- Contenuto Card -->
-          <div class="card-body p-4 d-flex flex-column">
-            <small class="fw-bold text-uppercase mb-2" style="color: #3b82f6; letter-spacing: 1px;">
-              {{hack.organizer}}
-            </small>
-            <h5 class="card-title text-white fw-bold mb-3">{{hack.title}}</h5>
-            
-            <div class="hack-details text-secondary small mb-4 flex-grow-1">
-              <div class="d-flex align-items-center mb-2">
-                <i class="bi bi-calendar-event me-2 text-primary"></i> 
-                {{hack.startDate}} - {{hack.endDate}}
-              </div>
-              <div class="d-flex align-items-center mb-2">
-                <i class="bi bi-geo-alt me-2 text-primary"></i> 
-                {{hack.location}}
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bi bi-people me-2 text-primary"></i> 
-                {{hack.partecipanti}} Partecipanti
+            <!-- Contenuto Card -->
+            <div class="card-body p-4 d-flex flex-column">
+              <small class="fw-bold text-uppercase mb-2" style="color: #3b82f6; letter-spacing: 1px;">
+                {{hack.organizer}}
+              </small>
+              <h5 class="card-title text-white fw-bold mb-3">{{hack.title}}</h5>
+              
+              <div class="hack-details text-secondary small mb-4 flex-grow-1">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-calendar-event me-2 text-primary"></i> 
+                  {{hack.startDate}} - {{hack.endDate}}
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-geo-alt me-2 text-primary"></i> 
+                  {{hack.location}}
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-people me-2 text-primary"></i> 
+                  {{hack.partecipanti}} Partecipanti
+                </div>
               </div>
             </div>
+          </div>
+        </a>
 
           
 
