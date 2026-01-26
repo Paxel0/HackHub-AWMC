@@ -1,10 +1,6 @@
-<aside class="sidebar" [class.collapsed]="isCollapsed">
+<aside class="sidebar">
   <div class="sidebar-header">
-    <span class="logo" *ngIf="! isCollapsed"> Hackhub</span>
-   
-    <button class="toggle-btn" (click)="toggleSidebar()">
-      <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'"></i>
-    </button>
+    <span class="logo"> Hackhub</span>
   </div>
 
   <nav class="sidebar-nav">
@@ -15,7 +11,7 @@
            [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
            class="nav-link">
           <i class="bi" [ngClass]="item.icon"></i>
-          <span class="nav-text" *ngIf="!isCollapsed">{{ item.label }}</span>
+          <span class="nav-text">{{ item.label }}</span>
         </a>
       </li>
     </ul>
@@ -24,7 +20,7 @@
   <div class="sidebar-footer">
     <button type="button" class="nav-link logout-link" (click)="onLogout()">
       <i class="bi bi-box-arrow-left"></i>
-      <span class="nav-text" *ngIf="!isCollapsed">Esci</span>
+      <span class="nav-text">Esci</span>
     </button>
   </div>
 </aside>

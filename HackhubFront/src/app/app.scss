@@ -28,28 +28,18 @@ main {
 /* Offset main and footer by sidebar width so they don't sit under it */
 app-sidebar + main {
   margin-left: var(--sidebar-width-expanded);
-  transition: margin-left .25s ease;
 }
 
 app-sidebar ~ app-footer {
   margin-left: var(--sidebar-width-expanded);
   position: relative;
   z-index: 1200; /* ensure footer overlays sidebar edge if needed */
-  transition: margin-left .25s ease;
-}
-
-/* Collapsed sidebar uses smaller offset */
-app-sidebar.collapsed + main,
-app-sidebar.collapsed ~ app-footer {
-  margin-left: var(--sidebar-width-collapsed);
 }
 
 /* Mobile: no offset */
 @media (max-width: 992px) {
   app-sidebar + main,
-  app-sidebar ~ app-footer,
-  app-sidebar.collapsed + main,
-  app-sidebar.collapsed ~ app-footer {
+  app-sidebar ~ app-footer {
     margin-left: 0;
   }
 }
