@@ -21,11 +21,5 @@ export const SIDEBAR_ROUTES = SIDEBAR_MENU_ITEMS.map(item => item.route);
   styleUrl: './sidebar.scss'
 })
 export class Sidebar {
-  isCollapsed = false;
-
-  toggleSidebar() {
-    this.isCollapsed = !this.isCollapsed;
-  }
-
   menuItems = SIDEBAR_MENU_ITEMS;
 }
