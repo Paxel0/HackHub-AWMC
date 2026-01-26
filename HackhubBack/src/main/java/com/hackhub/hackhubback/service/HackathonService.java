@@ -30,7 +30,4 @@ public class HackathonService {
         return repository.save(hackathon);
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
 }
