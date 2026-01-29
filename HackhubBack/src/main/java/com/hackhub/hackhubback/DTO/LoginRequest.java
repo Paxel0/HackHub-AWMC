@@ -1,9 +1,12 @@
 package com.hackhub.hackhubback.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class LoginRequest {
 
-    private String username;
-    private String password;
+@NotBlank @Size(max = 50) private String username;
+@NotBlank @Size(max = 50) private String password;
 
     public String getUsername() {
         return username;

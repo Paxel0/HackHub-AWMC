@@ -14,22 +14,27 @@ public class User {
     private String role = "utente";
 
     public Long getId() {
+
         return id;
     }
 
     public String getUsername() {
+
         return username;
     }
 
     public void setUsername(String username) {
+
         this.username = username;
     }
 
     public String getPassword() {
+
         return password;
     }
 
     public void setPassword(String password) {
+
         this.password = password;
     }
 
@@ -37,10 +42,14 @@ public class User {
         return role;
     }
 
-    public Boolean isEmpty() {
-        return this.username == null || this.username.isEmpty() || this.password == null || this.password.isEmpty();
+    // Verifica se l'entity User è incompleta (username o password mancanti o composti solo da spazi)
+    // Ritorna un primitivo boolean per evitare null pointer quando usato senza un Optional
+    public boolean isEmpty() {
+        return this.username == null || this.username.trim().isEmpty()
+                || this.password == null || this.password.trim().isEmpty();
     }
 
     public void setRole(String utente) {
+        this.role = utente;
     }
 }

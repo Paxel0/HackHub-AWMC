@@ -1,6 +1,7 @@
 package com.hackhub.hackhubback.controller;
 
 import com.hackhub.hackhubback.security.JwtUtils;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Valid
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class AuthController {
 
     private final JwtUtils jwtUtils;

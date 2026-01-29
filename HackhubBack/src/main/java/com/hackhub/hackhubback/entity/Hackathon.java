@@ -19,13 +19,21 @@ public class Hackathon {
 
     private String name;
 
+    private String creator;
+
     private String description;
 
-    private LocalDate startDate;
+    private LocalDate start_date;
 
-    private LocalDate endDate;
+    private LocalDate end_date;
 
     private String location;
+
+    private int max_teams;
+
+    private int reward;
+
+    private boolean is_online;
 
     protected Hackathon() {
     }
@@ -33,8 +41,8 @@ public class Hackathon {
     public Hackathon(String name, String description, LocalDate startDate, LocalDate endDate, String location) {
         this.name = name;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.start_date = startDate;
+        this.end_date = endDate;
         this.location = location;
     }
 
@@ -59,19 +67,19 @@ public class Hackathon {
     }
 
     public LocalDate getStartDate() {
-        return startDate;
+        return start_date;
     }
 
     public void setStartDate(LocalDate dataInizio) {
-        this.startDate = dataInizio;
+        this.start_date = dataInizio;
     }
 
     public LocalDate getEndDate() {
-        return endDate;
+        return end_date;
     }
 
     public void setEndDate(LocalDate dataFine) {
-        this.endDate = dataFine;
+        this.end_date = dataFine;
     }
 
     public String getLocation() {

@@ -16,8 +16,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -48,7 +53,8 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            // opzionale: log dell'errore
+            // Log dell'errore in debug per non esporre dati sensibili nei log di produzione
+            logger.debug("Errore durante l'autenticazione JWT: {}", e.getMessage());
         }
 
         filterChain.doFilter(request, response);

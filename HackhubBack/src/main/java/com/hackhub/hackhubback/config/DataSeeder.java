@@ -6,9 +6,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 public class DataSeeder {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataSeeder.class);
 
     @Bean
     public CommandLineRunner seedUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -23,9 +27,8 @@ public class DataSeeder {
                 u.setPassword(passwordEncoder.encode(rawPassword));
                 u.setRole("utente");
                 userRepository.save(u);
-                System.out.println("Utente admin creato con successo.");
+                logger.info("Utente admin creato con successo.");
             }
         };
     }
 }
-

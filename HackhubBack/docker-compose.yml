@@ -1,4 +1,8 @@
 services:
+  hackhub-back:
+    environment:
+      - HACKHUB_APP_JWTSECRETBASE64=${HACKHUB_APP_JWTSECRETBASE64}
+
   postgres:
     image: postgres:15-alpine
     container_name: hackhub-db
