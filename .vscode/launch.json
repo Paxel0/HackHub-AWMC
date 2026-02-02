@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "HackhubBack (Spring Boot)",
+      "request": "launch",
+      "mainClass": "com.hackhub.hackhubback.HackhubBackApplication",
+      "cwd": "${workspaceFolder}/HackhubBack",
+      "envFile": "${workspaceFolder}/HackhubBack/.env"
+    }
+  ]
+}

@@ -17,10 +17,13 @@ public class Hackathon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "creator")
     private String creator;
 
+    @Column(name = "description")
     private String description;
 
     @Column(name = "start_date")
@@ -29,11 +32,13 @@ public class Hackathon {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "location")
     private String location;
 
     @Column(name = "max_teams")
     private int maxTeams;
 
+    @Column(name = "reward")
     private int reward;
 
     @Column(name = "is_online")

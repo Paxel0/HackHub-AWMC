@@ -9,9 +9,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscribed_hackathon_id")
+    private Hackathon subscribedHackathon;
+
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+    
+    @Column(nullable = false)
     private String role = "utente";
+
+    public Hackathon getSubscribedHackathon() { return subscribedHackathon; }
+    public void setSubscribedHackathon(Hackathon subscribedHackathon) { this.subscribedHackathon = subscribedHackathon; }
+
 
     public Long getId() {
 
