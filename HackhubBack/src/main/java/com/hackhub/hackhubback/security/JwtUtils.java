@@ -101,8 +101,17 @@ public class JwtUtils {
             return Keys.hmacShaKeyFor(keyBytes);
         }
 
-        throw new IllegalStateException("No JWT secret configured. Set environment variable JWT_SECRET_BASE64 with a base64-encoded key of at least 32 bytes or mount Docker secret.");
+        // 5) FALLBACK CRITICO PER SVILUPPO LOCALE
+        logger.warn("!!! NESSUNA CHIAVE JWT CONFIGURATA !!! Generazione chiave temporanea in memoria.");
+        logger.warn("Ogni riavvio invaliderà i token esistenti. Configura JWT_SECRET_BASE64 per la persistenza.");
+        if (tempKey == null) {
+             tempKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        }
+        return tempKey;
     }
+    
+    // Chiave temporanea statica per l'istanza corrente
+    private static SecretKey tempKey = null;
 
     public String generateToken(String username) {
         Date now = new Date();

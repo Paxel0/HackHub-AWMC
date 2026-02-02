@@ -56,18 +56,18 @@
           </div>
 
           <!-- Hackathon Card -->
-          <div class="hackathon-card">
+          <div class="hackathon-card" *ngIf="hackathonAttivo; else noActiveHackathon">
             <div class="hackathon-image">
               <div class="hackathon-tags">
                 <span class="tag-event">{{ hackathonAttivo.tag }}</span>
-                <span class="tag-tipo">{{ hackathonAttivo. tipo }}</span>
+                <span class="tag-tipo">{{ hackathonAttivo.tipo }}</span>
               </div>
               <span class="badge-stato">● {{ hackathonAttivo.stato }}</span>
             </div>
 
             <div class="hackathon-content">
-              <h2 class="hackathon-titolo">{{ hackathonAttivo. titolo }}</h2>
-              <p class="hackathon-desc">{{ hackathonAttivo. descrizione }}</p>
+              <h2 class="hackathon-titolo">{{ hackathonAttivo.titolo }}</h2>
+              <p class="hackathon-desc">{{ hackathonAttivo.descrizione }}</p>
 
               <div class="tempo-rimasto">
                 <span class="tempo-label">TEMPO RIMASTO</span>
@@ -116,6 +116,15 @@
               </div>
             </div>
           </div>
+
+          <ng-template #noActiveHackathon>
+            <div class="hackathon-card empty-state">
+              <div class="hackathon-content">
+                <h3>Nessun Hackathon Attivo</h3>
+                <p>Iscriviti a un hackathon per vederlo qui!</p>
+              </div>
+            </div>
+          </ng-template>
         </div>
 
        

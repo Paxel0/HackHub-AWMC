@@ -7,6 +7,8 @@ export interface Hackathon {
   location: string;
   partecipanti: number;
   premio: string;
+  description: string;
+  isOnline: boolean;
   imageUrl: string;
   status: 'Aperto' | 'In corso' | 'Chiuso';
 }

@@ -2,6 +2,7 @@ package com.hackhub.hackhubback.entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +15,6 @@ public class Hackathon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
     private String name;
@@ -23,17 +23,21 @@ public class Hackathon {
 
     private String description;
 
-    private LocalDate start_date;
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
-    private LocalDate end_date;
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     private String location;
 
-    private int max_teams;
+    @Column(name = "max_teams")
+    private int maxTeams;
 
     private int reward;
 
-    private boolean is_online;
+    @Column(name = "is_online")
+    private boolean isOnline;
 
     protected Hackathon() {
     }
@@ -41,8 +45,8 @@ public class Hackathon {
     public Hackathon(String name, String description, LocalDate startDate, LocalDate endDate, String location) {
         this.name = name;
         this.description = description;
-        this.start_date = startDate;
-        this.end_date = endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
     }
 
@@ -54,32 +58,40 @@ public class Hackathon {
         return name;
     }
 
-    public void setName(String nome) {
-        this.name = nome;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String descrizione) {
-        this.description = descrizione;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getStartDate() {
-        return start_date;
+        return startDate;
     }
 
-    public void setStartDate(LocalDate dataInizio) {
-        this.start_date = dataInizio;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public LocalDate getEndDate() {
-        return end_date;
+        return endDate;
     }
 
-    public void setEndDate(LocalDate dataFine) {
-        this.end_date = dataFine;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public String getLocation() {
@@ -88,5 +100,29 @@ public class Hackathon {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public int getMaxTeams() {
+        return maxTeams;
+    }
+
+    public void setMaxTeams(int maxTeams) {
+        this.maxTeams = maxTeams;
+    }
+
+    public int getReward() {
+        return reward;
+    }
+
+    public void setReward(int reward) {
+        this.reward = reward;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean isOnline) {
+        this.isOnline = isOnline;
     }
 }
