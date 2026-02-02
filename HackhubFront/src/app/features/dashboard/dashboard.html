@@ -25,7 +25,7 @@
             <i class="bi bi-code-slash"></i>
           </div>
           <span class="stat-badge green">+1 questa settimana</span>
-          <p class="stat-label">Hackathon Totali</p>
+          <p class="stat-label">Hackathon a cui hai partecipato</p>
           <h2 class="stat-value">{{ stats.hackathonTotali }}</h2>
         </div>
 
@@ -53,7 +53,6 @@
         <div class="left-column">
           <div class="section-header">
             <h3>HACKATHON ATTIVI</h3>
-            <a href="#" class="link-vedi-tutti">Vedi tutti</a>
           </div>
 
           <!-- Hackathon Card -->
@@ -103,17 +102,15 @@
               <!-- Team Section -->
               <div class="team-section">
                 <div class="team-avatars">
-                  <img *ngFor="let avatar of hackathonAttivo.team.membri" [src]="avatar" class="avatar">
+                <img *ngFor="let avatar of hackathonAttivo.team.membri" [src]="avatar" class="avatar">
                   <span class="avatar-more">+{{ hackathonAttivo.team.altriMembri }}</span>
                 </div>
                 <div class="team-info">
                   <strong>{{ hackathonAttivo. team.nome }}</strong>
-                  <span>Team Leader:  {{ hackathonAttivo.team.leader }}</span>
                 </div>
                 <div class="team-actions">
-                  <button class="btn-secondary">Gestisci Team</button>
                   <button class="btn-primary">
-                    <i class="bi bi-send"></i> Continua Sottomissione
+                    <i class="bi bi-send"></i> Invia Sottomissione
                   </button>
                 </div>
               </div>
@@ -121,44 +118,6 @@
           </div>
         </div>
 
-        <!-- Right Column -->
-        <div class="right-column">
-          <!-- Inviti Pendenti -->
-          <div class="card-inviti">
-            <div class="card-title">
-              <i class="bi bi-envelope"></i> Inviti Pendenti
-            </div>
-            <div class="invito-item" *ngFor="let invito of invitiPendenti">
-              <div class="invito-avatar">{{ invito.iniziali }}</div>
-              <div class="invito-info">
-                <strong>{{ invito.team }}</strong>
-                <span>Ti ha invitato come:  {{ invito.ruolo }}</span>
-              </div>
-              <div class="invito-actions">
-                <button class="btn-accetta">Accetta</button>
-                <button class="btn-rifiuta">Rifiuta</button>
-              </div>
-            </div>
-          </div>
+       
 
-          <!-- Attività Recente -->
-          <div class="card-attivita">
-            <div class="card-title">
-              <i class="bi bi-clock-history"></i> Attività Recente
-            </div>
-            <div class="attivita-list">
-              <div class="attivita-item" *ngFor="let att of attivitaRecente">
-                <div class="attivita-dot" [class]="att.colore"></div>
-                <div class="attivita-content">
-                  <p [innerHTML]="att.testo"></p>
-                  <span class="attivita-tempo">{{ att.tempo }}</span>
-                </div>
-              </div>
-            </div>
-            <a href="#" class="link-cronologia">VEDI TUTTA LA CRONOLOGIA</a>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-</div>
+    

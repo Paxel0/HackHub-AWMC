@@ -1,0 +1,193 @@
+// Variabili tema scuro (allineate con dashboard.scss e home.scss)
+$bg-dark: #0a0a0f; // Sfondo molto scuro
+$card-bg: #12121a;
+$border-color: #1e1e2e;
+$text-primary: #ffffff;
+$text-secondary: #9ca3af;
+$accent-blue: #3b82f6;
+$accent-hover: #2563eb;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: $bg-dark; // Forza sfondo scuro
+  color: $text-primary;
+  padding: 2rem;
+  margin-left: 250px;
+}
+
+
+.explore-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Header & Search
+.explore-header {
+  margin-bottom: 3rem;
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: $text-secondary;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.search-wrapper {
+  max-width: 600px;
+}
+
+.filter-bar {
+  background: $card-bg;
+  border: 1px solid $border-color;
+
+  input::placeholder {
+    color: $text-secondary;
+  }
+}
+
+// Card stile (aggiunto hover per link)
+.hackathon-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+  }
+}
+
+.search-bar {
+  position: relative;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+  transition: border-color 0.3s ease;
+
+  &:focus-within {
+    border-color: $accent-blue;
+    box-shadow: 0 0 0 2px rgba($accent-blue, 0.2);
+  }
+
+
+  input {
+    background: transparent;
+    border: none;
+    color: $text-primary;
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+
+    &::placeholder {
+      color: rgba($text-secondary, 0.7);
+    }
+  }
+}
+
+// Grid
+.hackathons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+// Card
+.hack-card-wrapper {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  
+  &:hover .hack-card {
+    transform: translateY(-5px);
+    border-color: $accent-blue;
+  }
+}
+
+.hack-card {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .card-image-container {
+    position: relative;
+    height: 180px;
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .status-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+
+      &.aperto { background: rgba(34, 197, 94, 0.9); color: white; }
+      &.in-corso { background: rgba(234, 179, 8, 0.9); color: black; }
+      &.chiuso { background: rgba(75, 85, 99, 0.9); color: white; }
+    }
+  }
+
+  .card-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .organizer {
+      font-size: 0.75rem;
+      color: $accent-blue;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: $text-primary;
+    }
+    
+    .card-details {
+      margin-bottom: 1.5rem;
+      flex: 1;
+      
+      .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: $text-secondary;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        
+        i {
+          color: $accent-blue;
+        }
+      }
+    }
+  }
+}

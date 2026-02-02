@@ -1,0 +1,94 @@
+<div class="home-wrapper">
+  
+
+  <div class="container mt-4 mb-5">
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        <h1 class="text-white fw-bold">Esplora Hackathon</h1>
+        <p class="text-secondary">Cerca e filtra tra le migliori competizioni.</p>
+      </div>
+    </div>
+
+    <!-- Barra di Ricerca -->
+    <div class="filter-bar p-4 mb-5 rounded-4">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-0 text-secondary">
+              <i class="bi bi-search fs-5"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control bg-transparent text-white border-0 fs-5" 
+              placeholder="Cerca per titolo, organizzatore o città..."
+              [(ngModel)]="searchTerm"
+              (input)="filterHackathons()"
+              style="box-shadow: none;"
+            >
+          </div>
+        </div>
+        <div class="col-md-4 text-md-end text-secondary">
+          <span *ngIf="filteredHackathons.length > 0">
+            <strong>{{filteredHackathons.length}}</strong> risultati trovati
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Griglia Hackathon (Stile Home) -->
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let hack of filteredHackathons">
+        <a [routerLink]="['/explore-hackathons', hack.id]" class="text-decoration-none">
+          <div class="card h-100 border-0 hackathon-card" style="background-color: #12121a; border-radius: 16px; overflow: hidden;">
+            <!-- Immagine con badge -->
+            <div class="position-relative">
+              <img [src]="hack.imageUrl" class="w-100" alt="{{hack.title}}" style="height: 200px; object-fit: cover;">
+              <span class="position-absolute top-0 end-0 m-3 badge rounded-pill"
+                    [ngClass]="{
+                      'bg-success': hack.status === 'Aperto',
+                      'bg-warning text-dark': hack.status === 'In corso',
+                      'bg-secondary': hack.status === 'Chiuso'
+                    }">
+                {{hack.status}}
+              </span>
+            </div>
+
+            <!-- Contenuto Card -->
+            <div class="card-body p-4 d-flex flex-column">
+              <small class="fw-bold text-uppercase mb-2" style="color: #3b82f6; letter-spacing: 1px;">
+                {{hack.organizer}}
+              </small>
+              <h5 class="card-title text-white fw-bold mb-3">{{hack.title}}</h5>
+              
+              <div class="hack-details text-secondary small mb-4 flex-grow-1">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-calendar-event me-2 text-primary"></i> 
+                  {{hack.startDate}} - {{hack.endDate}}
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-geo-alt me-2 text-primary"></i> 
+                  {{hack.location}}
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-people me-2 text-primary"></i> 
+                  {{hack.partecipanti}} Partecipanti
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredHackathons.length === 0" class="text-center py-5">
+      <div class="mb-3 text-secondary opacity-50">
+        <i class="bi bi-search display-1"></i>
+      </div>
+      <h3 class="text-white">Nessun risultato trovato</h3>
+      <p class="text-secondary">Prova a modificare i termini di ricerca.</p>
+    </div>
+  </div>
+
+  
+</div>

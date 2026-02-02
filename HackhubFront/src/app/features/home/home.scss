@@ -1,5 +1,5 @@
-$bg-color: #0d1117;
-$card-black: #000000;
+$bg-color: hsl(216, 28%, 7%);
+$card-black: #161b22;
 $blue-accent: #2563eb;
 $border-color: #21262d;
 
@@ -7,7 +7,12 @@ $border-color: #21262d;
   background-color: $bg-color;
   padding-bottom: 0;
   margin-bottom: 0;
+  
 }
+.navbar-brand {
+    font-size: 2rem ;
+
+  }
 
 .hero-card {
   background-color: #161b22;
@@ -33,9 +38,14 @@ $border-color: #21262d;
 }
 
 .filter-bar {
-  background: #161b22;
+  background: #161b22c8;
   border-radius: 8px;
   border: 1px solid $border-color;
+ 
+  input::placeholder {
+    color: rgb(179, 167, 167) ;
+    opacity: 1;
+  }
 }
 
 .hack-card-black {

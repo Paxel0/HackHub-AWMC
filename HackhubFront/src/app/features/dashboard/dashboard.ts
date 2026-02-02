@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [ CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -29,7 +29,6 @@ export class Dashboard {
     progresso: 75,
     team: {
       nome: 'Neural Ninjas',
-      leader: 'Alex',
       membri: [
         'assets/avatar1.png',
         'assets/avatar2.png',
@@ -39,36 +38,7 @@ export class Dashboard {
     }
   };
 
-  // Inviti pendenti
-  invitiPendenti = [
-    {
-      iniziali: 'PX',
-      team: 'Pixel Pioneers',
-      ruolo: 'Designer'
-    }
-  ];
+  
 
-  // Attività recente
-  attivitaRecente = [
-    {
-      colore: 'blue',
-      testo: '<strong>Sarah</strong> ha caricato nuovi mockup per <a href="#">Neural Ninjas</a>',
-      tempo: '10 minuti fa'
-    },
-    {
-      colore: 'gray',
-      testo: 'Nuovo commento da <strong>Mentor Dave</strong> sul progetto.',
-      tempo: '2 ore fa'
-    },
-    {
-      colore:  'orange',
-      testo: 'Il tuo team <strong>Code Crushers</strong> è stato registrato a HackRome 24.',
-      tempo: 'Ieri'
-    },
-    {
-      colore:  'gray',
-      testo: 'Aggiornamento regole per <strong>Global AI Challenge</strong>.',
-      tempo: '2 giorni fa'
-    }
-  ];
+  
 }

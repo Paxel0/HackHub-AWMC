@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Hackathon } from '../../core/models/hackathon';
- 
-import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-hackathon-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule], 
-  templateUrl: './home.html',
-  styleUrl: './home.scss'
+  imports: [CommonModule, RouterLink],
+  templateUrl: './hackathon-detail.html',
+  styleUrls: ['./hackathon-detail.scss']
 })
-export class HomeComponent implements OnInit {
-  searchTerm: string = '';
-  filteredHackathons: Hackathon[] = [];
+export class HackathonDetailComponent implements OnInit {
+  hackathon?: Hackathon;
+  isRegistered = false;
+  isLoading = false;
 
-  hackathons: Hackathon[] = [
+  // Dati mock (in futuro da service/API)
+  private mockHackathons: Hackathon[] = [
     {
       id: 1,
       title: 'AI 2024',
@@ -91,21 +91,48 @@ export class HomeComponent implements OnInit {
     }
   ];
 
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
   ngOnInit() {
-    this.filteredHackathons = this.hackathons;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.hackathon = this.mockHackathons.find(h => h.id === id);
+    
+    if (!this.hackathon) {
+      // Reindirizza se non trovato
+      this.router.navigate(['/explore-hackathons']);
+    }
   }
 
-  filterHackathons() {
-    if (!this.searchTerm) {
-      this.filteredHackathons = this.hackathons;
-      return;
-    }
+  register() {
+    if (this.isLoading || this.isRegistered) return;
+    
+    this.isLoading = true;
+    // Simula chiamata API
+    setTimeout(() => {
+      this.isRegistered = true;
+      this.isLoading = false;
+      console.log('Iscritto all\'hackathon:', this.hackathon?.id);
+      // TODO: chiamata al service: hackathonService.register(this.hackathon!.id)
+    }, 500);
+  }
 
-    const term = this.searchTerm.toLowerCase();
-    this.filteredHackathons = this.hackathons.filter(h => 
-      h.title.toLowerCase().includes(term) ||
-      h.organizer.toLowerCase().includes(term) ||
-      h.location.toLowerCase().includes(term)
-    );
+  cancelRegistration() {
+    if (this.isLoading || !this.isRegistered) return;
+    
+    this.isLoading = true;
+    // Simula chiamata API
+    setTimeout(() => {
+      this.isRegistered = false;
+      this.isLoading = false;
+      console.log('Iscrizione annullata per hackathon:', this.hackathon?.id);
+      // TODO: chiamata al service: hackathonService.cancelRegistration(this.hackathon!.id)
+    }, 500);
+  }
+
+  goBack() {
+    this.router.navigate(['/explore-hackathons']);
   }
 }
