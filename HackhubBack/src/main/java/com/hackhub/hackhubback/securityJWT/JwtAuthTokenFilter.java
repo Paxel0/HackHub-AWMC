@@ -1,5 +1,5 @@
 // java
-package com.hackhub.hackhubback.security;
+package com.hackhub.hackhubback.securityJWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

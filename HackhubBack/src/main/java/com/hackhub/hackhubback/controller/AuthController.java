@@ -1,6 +1,5 @@
 package com.hackhub.hackhubback.controller;
 
-import com.hackhub.hackhubback.security.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hackhub.hackhubback.DTO.LoginRequest;
 import com.hackhub.hackhubback.entity.User;
+import com.hackhub.hackhubback.securityJWT.JwtUtils;
 import com.hackhub.hackhubback.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
