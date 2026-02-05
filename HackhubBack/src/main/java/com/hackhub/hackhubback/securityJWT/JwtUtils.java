@@ -1,4 +1,4 @@
-package com.hackhub.hackhubback.security;
+package com.hackhub.hackhubback.securityJWT;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
