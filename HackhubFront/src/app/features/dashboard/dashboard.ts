@@ -26,6 +26,7 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
     this.loadStats();
+    this.loadActiveSubscription();
   }
 
   loadStats() {
@@ -33,27 +34,31 @@ export class Dashboard implements OnInit {
     this.hackathonService.getAll().subscribe({
       next: (hackathons) => {
         this.stats.hackathonTotali = hackathons.length;
-        
-        if (hackathons.length > 0) {
-           // Logica placeholder: prendi il primo hackathon come "attivo" per demo
-           const active = hackathons[0];
-           this.hackathonAttivo = {
-             tag: 'EVENTO IN EVIDENZA',
-             tipo: active.isOnline ? 'ONLINE' : 'ONSITE',
-             stato: active.status.toUpperCase(),
-             titolo: active.title,
-             descrizione: active.description,
-             tempoRimasto: this.calculateTimeRemaining(active.endDate),
-             progresso: 65, // Valore simulato per demo
-             team: { 
-               nome: 'Tuo Team', 
-               membri: ['https://ui-avatars.com/api/?name=User+One', 'https://ui-avatars.com/api/?name=User+Two'], 
-               altriMembri: 1 
-             }
-           };
-        }
       },
       error: (err) => console.error('Errore caricamento dashboard', err)
+    });
+  }
+
+  loadActiveSubscription() {
+    this.hackathonService.getMySubscription().subscribe({
+      next: (hackathon) => {
+        if (hackathon) {
+          this.hackathonAttivo = {
+            id: hackathon.id,
+            tag: 'EVENTO SOTTOSCRITTO',
+            tipo: hackathon.isOnline ? 'ONLINE' : 'ONSITE',
+            stato: hackathon.status ? hackathon.status.toUpperCase() : 'APERTO',
+            titolo: hackathon.title,
+            descrizione: hackathon.description,
+            tempoRimasto: this.calculateTimeRemaining(hackathon.endDate),
+            progresso: 0, 
+            team: null
+          };
+        } else {
+           this.hackathonAttivo = null; 
+        }
+      },
+      error: (err) => console.error('Errore caricamento iscrizione', err)
     });
   }
 
@@ -63,13 +68,13 @@ export class Dashboard implements OnInit {
     const distance = end - now;
 
     if (distance < 0) {
-      return { ore: 0, minuti: 0, secondi: 0 };
+      return { giorni: 0, ore: 0, minuti: 0 };
     }
 
-    const ore = Math.floor(distance / (1000 * 60 * 60));
+    const giorni = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const ore = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minuti = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const secondi = Math.floor((distance % (1000 * 60)) / 1000);
 
-    return { ore, minuti, secondi };
+    return { giorni, ore, minuti };
   }
 }

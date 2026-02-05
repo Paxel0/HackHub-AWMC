@@ -24,8 +24,7 @@
           <div class="stat-icon blue">
             <i class="bi bi-code-slash"></i>
           </div>
-          <span class="stat-badge green">+1 questa settimana</span>
-          <p class="stat-label">Hackathon a cui hai partecipato</p>
+          <p class="stat-label">Hackathon disponibili</p>
           <h2 class="stat-value">{{ stats.hackathonTotali }}</h2>
         </div>
 
@@ -42,7 +41,7 @@
             <i class="bi bi-exclamation-circle"></i>
           </div>
           <span class="stat-badge red">Urgente</span>
-          <p class="stat-label">Scadenza Imminente</p>
+          <p class="stat-label">Scadenza Sottomissione</p>
           <h2 class="stat-value">{{ stats.scadenzaOre }}h :  {{ stats.scadenzaMinuti }}m</h2>
         </div>
       </div>
@@ -72,7 +71,7 @@
               <div class="tempo-rimasto">
                 <span class="tempo-label">TEMPO RIMASTO</span>
                 <div class="tempo-value">
-                  {{ hackathonAttivo.tempoRimasto.ore }}: {{ hackathonAttivo.tempoRimasto.minuti }}: {{ hackathonAttivo.tempoRimasto.secondi }}
+                  {{ hackathonAttivo.tempoRimasto.giorni }}g : {{ hackathonAttivo.tempoRimasto.ore }}h : {{ hackathonAttivo.tempoRimasto.minuti }}m
                 </div>
               </div>
 
@@ -100,19 +99,25 @@
               </div>
 
               <!-- Team Section -->
-              <div class="team-section">
+              <div class="team-section" *ngIf="hackathonAttivo.team">
                 <div class="team-avatars">
                 <img *ngFor="let avatar of hackathonAttivo.team.membri" [src]="avatar" class="avatar">
                   <span class="avatar-more">+{{ hackathonAttivo.team.altriMembri }}</span>
                 </div>
                 <div class="team-info">
-                  <strong>{{ hackathonAttivo. team.nome }}</strong>
+                  <strong>{{ hackathonAttivo.team.nome }}</strong>
                 </div>
                 <div class="team-actions">
                   <button class="btn-primary">
                     <i class="bi bi-send"></i> Invia Sottomissione
                   </button>
                 </div>
+              </div>
+
+              <div class="team-section" *ngIf="!hackathonAttivo.team">
+                 <div class="team-info">
+                    <strong class="text-white-50">Nessun team assegnato</strong>
+                 </div>
               </div>
             </div>
           </div>

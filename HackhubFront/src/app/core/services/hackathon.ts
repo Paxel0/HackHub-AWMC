@@ -31,24 +31,21 @@ export class HackathonService {
   }
 
   /**
-   * Iscrive l'utente corrente a un hackathon
+   * Iscrive o disiscrive l'utente corrente a un hackathon (toggle)
    */
-  register(hackathonId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${hackathonId}/registrations`, {});
+  toggleSubscription(hackathonId: number): Observable<Hackathon | null> {
+    return this.http.post<any>(`${this.apiUrl}/${hackathonId}/subscription`, {}).pipe(
+      map(response => response ? this.adaptToFrontend(response) : null)
+    );
   }
 
   /**
-   * Annulla l'iscrizione dell'utente corrente a un hackathon
+   * Ottiene l'hackathon a cui l'utente è iscritto (se presente)
    */
-  cancelRegistration(hackathonId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${hackathonId}/registrations/me`);
-  }
-
-  /**
-   * Verifica se l'utente è iscritto a un hackathon
-   */
-  isRegistered(hackathonId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/${hackathonId}/registrations/me/status`);
+  getMySubscription(): Observable<Hackathon | null> {
+    return this.http.get<any>(`${this.apiUrl}/me/subscription`).pipe(
+      map(response => response ? this.adaptToFrontend(response) : null)
+    );
   }
 
   // Metodo helper per adattare i dati backend al modello frontend

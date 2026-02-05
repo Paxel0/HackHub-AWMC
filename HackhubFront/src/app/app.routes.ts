@@ -14,10 +14,10 @@ export const routes: Routes = [
   // Quando il percorso è vuoto, mostra la Home
   { path: '', component: HomeComponent },
  
-  { path: 'dashboard', component: Dashboard /*, canActivate: [authGuard] */},
+  { path: 'dashboard', component: Dashboard , canActivate: [authGuard] },
   { path: 'team', component: TeamComponent, canActivate: [authGuard] },
-  { path: 'explore-hackathons', component: ExploreHackathonsComponent /*, canActivate: [authGuard] */},
-  { path: 'explore-hackathons/:id', component: HackathonDetailComponent /*, canActivate: [authGuard] */},
+  { path: 'explore-hackathons', component: ExploreHackathonsComponent , canActivate: [authGuard] },
+  { path: 'explore-hackathons/:id', component: HackathonDetailComponent , canActivate: [authGuard] },
   { path: 'prizes', component: PrizesComponent, canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent , canActivate: [authGuard]},
   { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },

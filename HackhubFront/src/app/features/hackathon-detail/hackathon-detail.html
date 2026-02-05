@@ -109,7 +109,7 @@
           <button 
             *ngIf="!isRegistered && hackathon.status === 'Aperto'"
             class="btn btn-primary w-100 py-3 mb-2 fw-bold"
-            (click)="register()"
+            (click)="toggleRegistration()"
             [disabled]="isLoading">
             <i class="bi bi-check-circle me-2"></i>
             {{isLoading ? 'Caricamento...' : 'Iscriviti Ora'}}
@@ -119,7 +119,7 @@
           <button 
             *ngIf="isRegistered"
             class="btn btn-outline-danger w-100 py-3 mb-2 fw-bold"
-            (click)="cancelRegistration()"
+            (click)="toggleRegistration()"
             [disabled]="isLoading">
             <i class="bi bi-x-circle me-2"></i>
             {{isLoading ? 'Caricamento...' : 'Annulla Iscrizione'}}

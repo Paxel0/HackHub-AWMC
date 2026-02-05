@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-prizes',
   standalone: true,
-  template: `
-    <section class="page-shell">
-      <h1>I miei premi</h1>
-      <p>Rivedi i riconoscimenti ottenuti e i premi disponibili.</p>
-    </section>
-  `
+  imports: [CommonModule],
+  templateUrl: './prizes.html',
+  styleUrls: ['./prizes.scss']
 })
 export class PrizesComponent {}

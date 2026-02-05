@@ -39,39 +39,32 @@ export class HackathonDetailComponent implements OnInit {
   }
 
   checkRegistrationStatus(id: number) {
-    this.hackathonService.isRegistered(id).subscribe({
-      next: (status) => this.isRegistered = status,
+    this.hackathonService.getMySubscription().subscribe({
+      next: (subscribedHackathon) => {
+        // Se c'è un hackathon e l'ID corrisponde, allora siamo iscritti
+        this.isRegistered = !!subscribedHackathon && subscribedHackathon.id === id;
+      },
       error: (err) => console.error('Error checking registration', err)
     });
   }
 
-  register() {
-    if (this.isLoading || this.isRegistered || !this.hackathon) return;
+  toggleRegistration() {
+    if (this.isLoading || !this.hackathon) return;
     
     this.isLoading = true;
-    this.hackathonService.register(this.hackathon.id).subscribe({
-      next: () => {
-        this.isRegistered = true;
+    this.hackathonService.toggleSubscription(this.hackathon.id).subscribe({
+      next: (result) => {
+        // Se result è null, significa toggle off (disiscritto)
+        // Se result è un oggetto, significa toggle on (iscritto)
+        this.isRegistered = !!result;
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Registration failed', err);
-        this.isLoading = false;
-      }
-    });
-  }
-
-  cancelRegistration() {
-    if (this.isLoading || !this.isRegistered || !this.hackathon) return;
-    
-    this.isLoading = true;
-    this.hackathonService.cancelRegistration(this.hackathon.id).subscribe({
-      next: () => {
-        this.isRegistered = false;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Cancellation failed', err);
+        console.error('Registration toggle failed', err);
+        // Se errore 409 (Conflict), gestiscilo mostrando un messaggio all'utente o semplicemente logga
+        if (err.status === 409) {
+          alert('Sei già iscritto ad un altro hackathon!');
+        }
         this.isLoading = false;
       }
     });
