@@ -1,5 +1,6 @@
 Relazione del Progetto HackHub-AWMC
 1. Panoramica del Progetto
+
 Il progetto HackHub è un'applicazione web full-stack progettata per la gestione e la partecipazione a hackathon.
 Il progetto mira a fornire una piattaforma per la gestione di hackathon costruita su tecnologie moderne e scalabili. L'architettura è divisa in due componenti principali:
 HackhubBack: Il server backend che espone le API, gestisce la logica di business e comunica con il database.
