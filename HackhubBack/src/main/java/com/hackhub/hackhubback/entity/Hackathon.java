@@ -41,9 +41,6 @@ public class Hackathon {
     @Column(name = "reward")
     private int reward;
 
-    @Column(name = "is_online")
-    private boolean isOnline;
-
     protected Hackathon() {
     }
 
@@ -123,11 +120,4 @@ public class Hackathon {
         this.reward = reward;
     }
 
-    public boolean isOnline() {
-        return isOnline;
-    }
-
-    public void setOnline(boolean isOnline) {
-        this.isOnline = isOnline;
-    }
 }
