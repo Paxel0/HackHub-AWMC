@@ -76,8 +76,10 @@ Per garantire la sicurezza e la scalabilità della piattaforma, è stato impleme
 4.Models: Le interfacce (es. Hackathon) tipizzano i dati. I service trasformano i dati grezzi del backend in modelli frontend.
 
 3. Comunicazione Frontend - Backend
+
 La comunicazione tra frontend e backend è basata su API RESTful. Il frontend invia richieste HTTP (GET, POST, PUT, DELETE) al backend, il quale elabora i dati e restituisce JSON .
 
 4. Conclusioni
+
 Il progetto presenta una struttura solida e moderna. L'uso di Spring Boot con JWT per il backend garantisce scalabilità e sicurezza, mentre l'uso di Angular con rotte protette per il frontend offre un'esperienza utente fluida e sicura.
 
