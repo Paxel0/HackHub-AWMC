@@ -5,6 +5,7 @@ Il progetto HackHub è un'applicazione web full-stack progettata per la gestione
 Il progetto mira a fornire una piattaforma per la gestione di hackathon costruita su tecnologie moderne e scalabili. L'architettura è divisa in due componenti principali:
 HackhubBack: Il server backend che espone le API, gestisce la logica di business e comunica con il database.
 HackhubFront: Il frontend dell'applicazione che gestisce l'esperienza utente e si interfaccia dinamicamente con la logica di business del server tramite chiamate API.
+
 2.1 Backend (HackhubBack)  
 Il backend è sviluppato in Java e si basa sul framework Spring Boot, offrendo una struttura robusta, è responsabile della gestione dei dati, della logica di business e della sicurezza delle API.
 Stack Tecnologico:
@@ -41,6 +42,7 @@ Endpoint Accessibili:
 L'endpoint /api/login è pubblico (permittedAll).
 Gli endpoint GET sotto /api/hackathons/** sono accessibili a tutti (lettura pubblica degli eventi).
 Tutte le altre richieste richiedono autenticazione tramite il filtro JWT (JwtAuthTokenFilter).
+
 2.2 Frontend (HackhubFront)
 Il frontend è una Single Page Application (SPA) moderna costruita con Angular.
 Stack Tecnologico:
@@ -68,6 +70,7 @@ Per garantire la sicurezza e la scalabilità della piattaforma, è stato impleme
 
 3. Comunicazione Frontend - Backend
 La comunicazione tra frontend e backend è basata su API RESTful. Il frontend invia richieste HTTP (GET, POST, PUT, DELETE) al backend, il quale elabora i dati e restituisce JSON .
+
 4. Conclusioni
 Il progetto presenta una struttura solida e moderna. L'uso di Spring Boot con JWT per il backend garantisce scalabilità e sicurezza, mentre l'uso di Angular con rotte protette per il frontend offre un'esperienza utente fluida e sicura.
 
