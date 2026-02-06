@@ -7,7 +7,7 @@
 
     <!-- Header con Immagine -->
     <div class="detail-header rounded-4 overflow-hidden mb-4 position-relative">
-      <img [src]="hackathon.imageUrl" class="w-100" alt="{{hackathon.title}}" 
+      <img [src]="hackathon.imageUrl" class="w-100" alt="{{hackathon.name}}" 
            style="height: 400px; object-fit: cover; filter: brightness(0.7);">
       <div class="position-absolute bottom-0 start-0 p-4 w-100" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
         <span class="badge rounded-pill mb-2"
@@ -18,9 +18,9 @@
               }">
           {{hackathon.status}}
         </span>
-        <h1 class="text-white fw-bold mb-2">{{hackathon.title}}</h1>
+        <h1 class="text-white fw-bold mb-2">{{hackathon.name}}</h1>
         <p class="text-white-50 mb-0 text-uppercase" style="letter-spacing: 1px;">
-          <i class="bi bi-building me-2"></i>{{hackathon.organizer}}
+          <i class="bi bi-building me-2"></i>{{hackathon.creator}}
         </p>
       </div>
     </div>
@@ -52,7 +52,7 @@
               <i class="bi bi-people text-primary fs-4 me-3"></i>
               <div class="flex-grow-1">
                 <h6 class="text-white mb-1">Partecipanti</h6>
-                <p class="text-secondary mb-0">{{hackathon.partecipanti}} iscritti</p>
+                <p class="text-secondary mb-0">{{hackathon.maxTeams}} iscritti</p>
               </div>
             </div>
 
@@ -60,7 +60,7 @@
               <i class="bi bi-trophy text-primary fs-4 me-3"></i>
               <div class="flex-grow-1">
                 <h6 class="text-white mb-1">Premio</h6>
-                <p class="text-secondary mb-0">{{hackathon.premio}}</p>
+                <p class="text-secondary mb-0">{{hackathon.reward}}€</p>
               </div>
             </div>
           </div>

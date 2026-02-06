@@ -11,15 +11,15 @@ import { Hackathon } from '../../core/models/hackathon';
   styleUrl: './dashboard.scss'
 })
 export class Dashboard implements OnInit {
-  // Stats cards data
+  // Starts cards data
   stats = {
     hackathonTotali: 0,
-    sottomissioniPendenti: 0, // Dato non disponibile dal backend attuale
-    scadenzaOre: 0,           // Dato non disponibile dal backend attuale
-    scadenzaMinuti: 0        // Dato non disponibile dal backend attuale
+    sottomissioniPendenti: 0, 
+    scadenzaOre: 0,           
+    scadenzaMinuti: 0       
   };
 
-  // Hackathon attivo (Placeholder finché non viene implementato l'endpoint registrazioni)
+  // Hackathon attivo: quando viene implementato l'endpoint registrazioni compare l'hackathon a cui l'utente è iscritto
   hackathonAttivo: any = null;
 
   constructor(private hackathonService: HackathonService) {}
@@ -30,7 +30,7 @@ export class Dashboard implements OnInit {
   }
 
   loadStats() {
-    // 1. Carica il numero totale di hackathon disponibili
+    // Carica il numero totale di hackathon disponibili
     this.hackathonService.getAll().subscribe({
       next: (hackathons) => {
         this.stats.hackathonTotali = hackathons.length;
@@ -48,7 +48,7 @@ export class Dashboard implements OnInit {
             tag: 'EVENTO SOTTOSCRITTO',
             tipo: hackathon.isOnline ? 'ONLINE' : 'ONSITE',
             stato: hackathon.status ? hackathon.status.toUpperCase() : 'APERTO',
-            titolo: hackathon.title,
+            titolo: hackathon.name,
             descrizione: hackathon.description,
             tempoRimasto: this.calculateTimeRemaining(hackathon.endDate),
             progresso: 0, 
@@ -77,4 +77,15 @@ export class Dashboard implements OnInit {
 
     return { giorni, ore, minuti };
   }
-}
+
+  unsubscribe() {
+    if (!this.hackathonAttivo) return;
+    
+    this.hackathonService.toggleSubscription(this.hackathonAttivo.id).subscribe({
+      next: () => {
+        this.hackathonAttivo = null;
+        this.loadStats();
+      },
+      error: (err) => console.error('Errore discrizione', err)
+    });
+  }}

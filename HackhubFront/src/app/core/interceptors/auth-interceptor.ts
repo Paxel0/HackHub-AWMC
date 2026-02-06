@@ -1,8 +1,10 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
+// Aggiunge automaticamente il token JWT a tutte le richieste HTTP
+
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  // Non aggiungere il token se è una richiesta di login o registrazione
-  if (req.url.includes('/login') || req.url.includes('/register')) {
+  // Non aggiungere il token se è una richiesta di login 
+  if (req.url.includes('/login')) {
     return next(req);
   }
 

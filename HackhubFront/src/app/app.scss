@@ -11,7 +11,7 @@ html {
 }
 
 :root {
-  /* Adjust if your footer height changes */
+  // Modifica se cambia l'altezza del footer
   --footer-height: 72px;
   --sidebar-width-expanded: 250px;
   --sidebar-width-collapsed: 70px;
@@ -25,7 +25,7 @@ main {
   flex: 1;
 }
 
-/* Offset main and footer by sidebar width so they don't sit under it */
+// sposta main e footer rispetto alla sidebar così non vanno sotto 
 app-sidebar + main {
   margin-left: var(--sidebar-width-expanded);
 }
@@ -33,10 +33,10 @@ app-sidebar + main {
 app-sidebar ~ app-footer {
   margin-left: var(--sidebar-width-expanded);
   position: relative;
-  z-index: 1200; /* ensure footer overlays sidebar edge if needed */
+  z-index: 1200; // footer sopra il bordo della sidebar se necessario 
 }
 
-/* Mobile: no offset */
+// nessuno spostamento
 @media (max-width: 992px) {
   app-sidebar + main,
   app-sidebar ~ app-footer {

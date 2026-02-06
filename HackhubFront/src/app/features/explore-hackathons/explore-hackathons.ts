@@ -37,8 +37,8 @@ export class ExploreHackathonsComponent implements OnInit {
 
     const term = this.searchTerm.toLowerCase();
     this.filteredHackathons = this.allHackathons.filter(h => 
-      h.title.toLowerCase().includes(term) ||
-      h.organizer.toLowerCase().includes(term) ||
+      h.name.toLowerCase().includes(term) ||
+      h.creator.toLowerCase().includes(term) ||
       h.location.toLowerCase().includes(term)
     );
   }

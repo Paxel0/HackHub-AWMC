@@ -21,7 +21,7 @@ export class App {
   showFooter = signal(true);
 
   constructor(private router: Router) {
-    // Ascolta i cambiamenti di rotta
+    // segui i cambiamenti di rotta
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {

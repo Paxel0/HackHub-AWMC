@@ -8,10 +8,10 @@ import { HackathonDetailComponent } from './features/hackathon-detail/hackathon-
 import { PrizesComponent } from './features/prizes/prizes';
 import { ProfileComponent } from './features/profile/profile';
 import { SettingsComponent } from './features/settings/settings';
-import { authGuard } from './core/guards/auth-guard'; // Importa la tua guardia
+import { authGuard } from './core/guards/auth-guard'; // Importa guards
 
 export const routes: Routes = [
-  // Quando il percorso è vuoto, mostra la Home
+  // se il  percorso è vuoto, mostra la Home
   { path: '', component: HomeComponent },
  
   { path: 'dashboard', component: Dashboard , canActivate: [authGuard] },
@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent , canActivate: [authGuard]},
   { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
  
-  // Aggiunto percorso per la pagina di login
+  //  percorso per la pagina di login
   { path: 'login', component: Login }
  
   

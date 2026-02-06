@@ -54,8 +54,8 @@ export class HackathonDetailComponent implements OnInit {
     this.isLoading = true;
     this.hackathonService.toggleSubscription(this.hackathon.id).subscribe({
       next: (result) => {
-        // Se result è null, significa toggle off (disiscritto)
-        // Se result è un oggetto, significa toggle on (iscritto)
+        // Se result è null,  toggle off (disiscritto)
+        // Se result è un oggetto,  toggle on (iscritto)
         this.isRegistered = !!result;
         this.isLoading = false;
       },

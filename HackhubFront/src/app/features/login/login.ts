@@ -27,7 +27,7 @@ export class Login {
         // Salva il token ricevuto dal backend
         if (response.token) {
           localStorage.setItem('authToken', response.token);
-          // Se il backend restituisce anche username o ruolo, potresti salvarli
+          // Se il backend restituisce anche username, salvalo 
           if (response.username) {
             localStorage.setItem('username', response.username);
           }

@@ -18,7 +18,7 @@
     </header>
 
     <main class="dashboard-main">
-      <!-- Stats Cards -->
+      <!-- Start cards -->
       <div class="stats-row">
         <div class="stat-card">
           <div class="stat-icon blue">
@@ -99,25 +99,17 @@
               </div>
 
               <!-- Team Section -->
-              <div class="team-section" *ngIf="hackathonAttivo.team">
-                <div class="team-avatars">
-                <img *ngFor="let avatar of hackathonAttivo.team.membri" [src]="avatar" class="avatar">
-                  <span class="avatar-more">+{{ hackathonAttivo.team.altriMembri }}</span>
-                </div>
-                <div class="team-info">
-                  <strong>{{ hackathonAttivo.team.nome }}</strong>
-                </div>
-                <div class="team-actions">
-                  <button class="btn-primary">
-                    <i class="bi bi-send"></i> Invia Sottomissione
-                  </button>
-                </div>
-              </div>
-
+              
               <div class="team-section" *ngIf="!hackathonAttivo.team">
                  <div class="team-info">
                     <strong class="text-white-50">Nessun team assegnato</strong>
                  </div>
+              </div>
+
+              <div class="unsubscribe-section" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <button class="btn btn-outline-danger w-100" (click)="unsubscribe()">
+                  <i class="bi bi-x-circle me-2"></i> Disiscriviti
+                </button>
               </div>
             </div>
           </div>

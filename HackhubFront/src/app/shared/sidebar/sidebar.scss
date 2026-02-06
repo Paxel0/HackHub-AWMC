@@ -13,7 +13,7 @@
   border-right: 1px solid #1e1e2e;
 }
 
-/* Mobile: sidebar should overlay and not force layout offsets */
+// Sidebar fa overlay non sposta contenuto pagina
 @media (max-width: 992px) {
   .sidebar {
     height: calc(100vh - var(--footer-height, 72px));
@@ -39,7 +39,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  /* Stop before footer height so it never covers the footer */
+  // Pagina non deve mai coprire il footer
   height: calc(100vh - var(--footer-height, 72px));
   width: 250px;
 .nav-list {
