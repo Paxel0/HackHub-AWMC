@@ -34,16 +34,19 @@ service: Contiene la logica di business. Le classi qui presenti (annotate con @S
 Configurazione e Build:
 Il progetto utilizza Maven come strumento di build e gestione delle dipendenze (pom.xml).
 La configurazione dell'ambiente è gestita tramite variabili d'ambiente (file .env), una best practice per la sicurezza (es. per segreti JWT e credenziali DB).
+
 Sicurezza:
 La sicurezza è configurata in SecurityConfig.java con le seguenti politiche:
 Sessione: Stateless (senza stato), ideale per architetture RESTful con JWT.
 Hashing Password: Utilizzo di BCryptPasswordEncoder per la cifratura delle password.
+
 Endpoint Accessibili:
 L'endpoint /api/login è pubblico (permittedAll).
 Gli endpoint GET sotto /api/hackathons/** sono accessibili a tutti (lettura pubblica degli eventi).
 Tutte le altre richieste richiedono autenticazione tramite il filtro JWT (JwtAuthTokenFilter).
 
 2.2 Frontend (HackhubFront)
+
 Il frontend è una Single Page Application (SPA) moderna costruita con Angular.
 Stack Tecnologico:
 Framework: Angular (versione 20.3.0) (in linea con gli standard di sviluppo web più attuali) framework completo con TypeScript come linguaggio primario
@@ -63,9 +66,13 @@ Shared: raccoglie tutti gli elementi riutilizzabili dell'interfaccia. In questa 
 
 Gestione sicurezza 
 Per garantire la sicurezza e la scalabilità della piattaforma, è stato implementato un sistema di autenticazione stateless basato sullo standard JWT (JSON Web Token). Questa architettura permette di gestire le sessioni utente in modo sicuro e disaccoppiato, utilizzando il token come chiave d'accesso per le risorse protette. Lato frontend, la gestione del token e la protezione delle rotte sono state orchestrate attraverso i seguenti componenti Angular:
+
 1.Service: Gestisce il login chiamando l'API /api/login e il logout rimuovendo il token dal localStorage.
+
 2.Guards: Protegge le rotte private (es. dashboard). Se non trova il token nel localStorage, blocca l'accesso e reindirizza al login.
+
 3.Interceptors: Intercetta automaticamente tutte le chiamate HTTP (eccetto il login) e inserisce l'header Authorization: Bearer <token>, garantendo comunicazioni autenticate senza codice ripetitivo.
+
 4.Models: Le interfacce (es. Hackathon) tipizzano i dati. I service trasformano i dati grezzi del backend in modelli frontend.
 
 3. Comunicazione Frontend - Backend
