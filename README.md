@@ -6,6 +6,7 @@ Il progetto mira a fornire una piattaforma per la gestione di hackathon costruit
 HackhubBack: Il server backend che espone le API, gestisce la logica di business e comunica con il database.
 HackhubFront: Il frontend dell'applicazione che gestisce l'esperienza utente e si interfaccia dinamicamente con la logica di business del server tramite chiamate API.
 
+
 2.1 Backend (HackhubBack)  
 Il backend è sviluppato in Java e si basa sul framework Spring Boot, offrendo una struttura robusta, è responsabile della gestione dei dati, della logica di business e della sicurezza delle API.
 Stack Tecnologico:
@@ -21,29 +22,38 @@ Architettura
 Il backend segue un’architettura a livelli(Layered):
 Config: Contiene le classi di configurazione dell'applicazione. Qui troverai file annotati con @Configuration che gestiscono impostazioni globali come la sicurezza (Spring Security), la configurazione CORS, i bean personalizzati o la configurazione del database.
 
+
 Controller: È il livello di interfaccia verso l'esterno (API Layer). Le classi qui presenti (annotate con @RestController) gestiscono le richieste HTTP in arrivo (GET, POST, PUT, DELETE), invocano la logica di business necessaria e restituiscono le risposte al client (solitamente in formato JSON).
+
 
 DTO (Data Transfer Object): Contiene oggetti semplici (POJO) utilizzati per trasportare dati tra i processi o i livelli dell'applicazione. Servono a disaccoppiare le entità del database dai dati esposti nelle API, permettendo di nascondere campi sensibili o aggregare dati da più fonti.
 
+
 Entity: Rappresenta il modello dei dati. Le classi in questa cartella sono mappate direttamente sulle tabelle del database (solitamente tramite JPA/Hibernate con l'annotazione @Entity). Ogni istanza di una classe entity corrisponde a una riga in una tabella.
+
 
 Repository: È il livello di accesso ai dati. Contiene interfacce che estendono solitamente JpaRepository. Spring Boot implementa automaticamente queste interfacce per fornire metodi standard per interagire con il database (salvataggio, ricerca, cancellazione) senza dover scrivere query SQL manualmente per le operazioni base.
 
+
 service: Contiene la logica di business. Le classi qui presenti (annotate con @Service) orchestrano le operazioni complesse. Ricevono i dati dai Controller, applicano regole di validazione o calcoli, interagiscono con uno o più Repository per la persistenza e restituiscono i risultati elaborati.
+
 
 Configurazione e Build:
 Il progetto utilizza Maven come strumento di build e gestione delle dipendenze (pom.xml).
 La configurazione dell'ambiente è gestita tramite variabili d'ambiente (file .env), una best practice per la sicurezza (es. per segreti JWT e credenziali DB).
+
 
 Sicurezza:
 La sicurezza è configurata in SecurityConfig.java con le seguenti politiche:
 Sessione: Stateless (senza stato), ideale per architetture RESTful con JWT.
 Hashing Password: Utilizzo di BCryptPasswordEncoder per la cifratura delle password.
 
+
 Endpoint Accessibili:
 L'endpoint /api/login è pubblico (permittedAll).
 Gli endpoint GET sotto /api/hackathons/** sono accessibili a tutti (lettura pubblica degli eventi).
 Tutte le altre richieste richiedono autenticazione tramite il filtro JWT (JwtAuthTokenFilter).
+
 
 2.2 Frontend (HackhubFront)
 
@@ -60,9 +70,12 @@ Architettura
 Il codice è suddiviso in tre macro-aree logiche:
 Core: rappresenta il "cervello" dell'applicazione. Qui risiede tutta la logica non visiva, come i Services per la comunicazione con il backend, i Models per definire la struttura dei dati, le Guards per la protezione delle rotte e gli Interceptors per la gestione automatica dei token di sicurezza.
 
+
 Features: contiene le pagine vere e proprie della piattaforma, organizzate per funzionalità. Qui troviamo i componenti specifici per la Home, l'Autenticazione (Login/Registrazione), la gestione degli Hackathon e la Dashboard utente.
 
+
 Shared: raccoglie tutti gli elementi riutilizzabili dell'interfaccia. In questa sezione sono definiti i componenti grafici comuni (come Navbar, Footer).
+
 
 Gestione sicurezza 
 Per garantire la sicurezza e la scalabilità della piattaforma, è stato implementato un sistema di autenticazione stateless basato sullo standard JWT (JSON Web Token). Questa architettura permette di gestire le sessioni utente in modo sicuro e disaccoppiato, utilizzando il token come chiave d'accesso per le risorse protette. Lato frontend, la gestione del token e la protezione delle rotte sono state orchestrate attraverso i seguenti componenti Angular:
