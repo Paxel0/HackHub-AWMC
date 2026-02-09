@@ -28,7 +28,6 @@ public class AuthController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    // Rimosso AuthenticationManager perché non usato nella logica manuale qui sotto
     public AuthController(JwtUtils jwtUtils, UserService userService, PasswordEncoder passwordEncoder) {
         this.jwtUtils = jwtUtils;
         this.userService = userService;
@@ -38,7 +37,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
-        // Verifica che userService non ritorni null o lanci eccezioni
         User user = userService.findIdByUsername(loginRequest.getUsername());
 
         if (user == null) {

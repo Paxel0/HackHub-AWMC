@@ -18,20 +18,15 @@ public class UserService implements UserDetailsService {
     public User findIdByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
-
-    // 2. Metodo OBBLIGATORIO per Spring Security
-    // Quando fai login, Spring chiama AUTOMATICAMENTE questo metodo
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Cerca l'utente nel DB usando il tuo metodo o direttamente la repository
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato: " + username));
 
-        // Converte il tuo "User" (Entity del DB) in un "UserDetails" (Oggetto di Spring Security)
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
-                .password(user.getPassword()) // Passa la password hashata dal DB
-                .roles(user.getRole())        // Passa il ruolo (es. "ADMIN", "USER")
+                .password(user.getPassword())
+                .roles(user.getRole())
                 .build();
 
     }

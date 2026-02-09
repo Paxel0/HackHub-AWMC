@@ -62,11 +62,4 @@ public class HackathonController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    // POST /hackathons - Crea nuovo hackathon
-    @PostMapping
-    public ResponseEntity<Hackathon> createHackathon(@RequestBody Hackathon hackathon) {
-        return ResponseEntity.ok(hackathonService.save(hackathon));
-    }
-
 }

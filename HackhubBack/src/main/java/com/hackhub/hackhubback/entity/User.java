@@ -55,14 +55,6 @@ public class User {
     public String getRole() {
         return role;
     }
-
-    // Verifica se l'entity User è incompleta (username o password mancanti o composti solo da spazi)
-    // Ritorna un primitivo boolean per evitare null pointer quando usato senza un Optional
-    public boolean isEmpty() {
-        return this.username == null || this.username.trim().isEmpty()
-                || this.password == null || this.password.trim().isEmpty();
-    }
-
     public void setRole(String utente) {
         this.role = utente;
     }
