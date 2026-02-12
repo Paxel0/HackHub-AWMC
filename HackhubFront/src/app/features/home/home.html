@@ -70,7 +70,14 @@
         <div class="card hack-card-black h-100">
           <div class="position-relative">
             <img [src]="hack.imageUrl" class="card-img-top" alt="...">
-            <span class="status-badge" [ngClass]="hack.status?.toLowerCase()">{{hack.status}}</span>
+            <span class="badge rounded-pill status-badge"
+                  [ngClass]="{
+                    'bg-success': hack.status === 'Aperto',
+                    'bg-warning text-dark': hack.status === 'In corso',
+                    'bg-danger': hack.status === 'Chiuso'
+                  }">
+              {{hack.status}}
+            </span>
           </div>
           <div class="card-body p-4">
             <small class="text-primary-blue fw-bold text-uppercase">{{hack.creator}}</small>

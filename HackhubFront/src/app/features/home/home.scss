@@ -69,13 +69,7 @@ $border-color: #21262d;
   position: absolute;
   top: 15px;
   right: 15px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  font-weight: bold;
-  &.open { background: #238636; color: white; }
-  &.ongoing { background: #d29922; color: black; }
-  &.ended { background: #484f58; color: white; }
+  font-size: 0.8rem;
 }
 
 .hack-details {
