@@ -20,22 +20,25 @@ JWT (JSON Web Token): Implementato tramite la libreria jjwt (version 0.11.5) per
 Containerizzazione: Docker e Docker Compose sono utilizzati per orchestrare il servizio backend e il database PostgreSQL, facilitando il setup dell'ambiente di sviluppo.
 Architettura
 Il backend segue un’architettura a livelli(Layered):
-Config: Contiene le classi di configurazione dell'applicazione. Qui troverai file annotati con @Configuration che gestiscono impostazioni globali come la sicurezza (Spring Security), la configurazione CORS, i bean personalizzati o la configurazione del database.
+Config: Contiene le classi di configurazione Spring.
 
 
-Controller: È il livello di interfaccia verso l'esterno (API Layer). Le classi qui presenti (annotate con @RestController) gestiscono le richieste HTTP in arrivo (GET, POST, PUT, DELETE), invocano la logica di business necessaria e restituiscono le risposte al client (solitamente in formato JSON).
+Controller: Contiene i controller che espongono le API REST ai client (il frontend Angular).
 
 
-DTO (Data Transfer Object): Contiene oggetti semplici (POJO) utilizzati per trasportare dati tra i processi o i livelli dell'applicazione. Servono a disaccoppiare le entità del database dai dati esposti nelle API, permettendo di nascondere campi sensibili o aggregare dati da più fonti.
+DTO (Data Transfer Object): Contiene oggetti usati per trasferire dati tra client e server, disaccoppiandoli dalle entità.
 
 
-Entity: Rappresenta il modello dei dati. Le classi in questa cartella sono mappate direttamente sulle tabelle del database (solitamente tramite JPA/Hibernate con l'annotazione @Entity). Ogni istanza di una classe entity corrisponde a una riga in una tabella.
+Entity:Contiene le classi che mappano le tabelle del database (tramite JPA/Hibernate con l'annotazione @Entity).
 
 
-Repository: È il livello di accesso ai dati. Contiene interfacce che estendono solitamente JpaRepository. Spring Boot implementa automaticamente queste interfacce per fornire metodi standard per interagire con il database (salvataggio, ricerca, cancellazione) senza dover scrivere query SQL manualmente per le operazioni base.
+Repository: Contiene le interfacce che estendono JpaRepository per le operazioni CRUD sul database.
 
 
-service: Contiene la logica di business. Le classi qui presenti (annotate con @Service) orchestrano le operazioni complesse. Ricevono i dati dai Controller, applicano regole di validazione o calcoli, interagiscono con uno o più Repository per la persistenza e restituiscono i risultati elaborati.
+service: Contiene i servizi con la logica applicativa, che fanno da intermediari tra controller e repository.
+
+
+securitiJWT: Contiene la logica per l'autenticazione tramite JSON Web Token.
 
 
 Configurazione e Build:
