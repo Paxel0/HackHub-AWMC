@@ -1,0 +1,63 @@
+# ============================================
+# HackHub - Git Ignore Configuration
+# ============================================
+
+# ============ ENVIRONMENT & SECRETS ============
+# IMPORTANTE: Mai committare file con credenziali!
+.env
+.env.local
+.env.*.local
+*.env
+
+# Chiavi e certificati
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+
+# ============ IDE ============
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ============ OS ============
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ============ LOGS ============
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============ BUILD OUTPUTS ============
+dist/
+build/
+target/
+out/
+*.jar
+*.war
+
+# ============ DEPENDENCIES ============
+node_modules/
+.npm/
+.yarn/
+
+# ============ DOCKER ============
+# Non ignorare docker-compose.yml, ma ignora override locali
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ============ TEST & COVERAGE ============
+coverage/
+.nyc_output/
+*.lcov
+test-results/

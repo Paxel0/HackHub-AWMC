@@ -1,0 +1,85 @@
+# ============================================
+# HackHub - Docker Compose Configuration
+# ============================================
+# Uso:
+#   1. Copia .env.example in .env e configura i valori
+#   2. Esegui: docker-compose up -d
+#   3. Frontend: http://localhost
+#   4. Backend API: http://localhost:8080/api
+# ============================================
+
+services:
+  # ============ DATABASE ============
+  postgres:
+    image: postgres:15-alpine
+    container_name: hackhub-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-hackhub_db}
+      POSTGRES_USER: ${DB_USERNAME:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Database password is required}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-admin} -d ${DB_NAME:-hackhub_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - hackhub-network
+    restart: unless-stopped
+
+  # ============ BACKEND (Spring Boot) ============
+  backend:
+    build:
+      context: ./HackhubBack
+      dockerfile: Dockerfile
+    container_name: hackhub-backend
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-hackhub_db}
+      DB_USERNAME: ${DB_USERNAME:-admin}
+      DB_PASSWORD: ${DB_PASSWORD:?Database password is required}
+      HACKHUB_APP_JWTSECRETBASE64: ${HACKHUB_APP_JWTSECRETBASE64:?JWT secret is required}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-prod}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hackhub-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/hackathons"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ============ FRONTEND (Angular + Nginx) ============
+  frontend:
+    build:
+      context: ./HackhubFront
+      dockerfile: Dockerfile
+    container_name: hackhub-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - hackhub-network
+    restart: unless-stopped
+
+# ============ VOLUMES ============
+volumes:
+  postgres_data:
+    name: hackhub-postgres-data
+
+# ============ NETWORKS ============
+networks:
+  hackhub-network:
+    name: hackhub-network
+    driver: bridge
