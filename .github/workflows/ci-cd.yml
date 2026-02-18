@@ -165,22 +165,29 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ubuntu
       run: |
-        # Configura la chiave SSH privata
+        set -eux  # Abilita il debug e interrompe lo script al primo errore
+        
+        echo "Configuring SSH key..."
         mkdir -p ~/.ssh/
         echo "$PRIVATE_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         
-        # Aggiungi l'host ai known_hosts per evitare il prompt "Are you sure..."
+        echo "Adding host to known_hosts..."
         ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
 
-        # create the target folder
+        echo "Testing SSH connectivity..."
+        # Prova a connetterti e lanciare un comando semplice
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST "echo 'Connection successful!'"
+
+        echo "Creating target directory..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST "mkdir -p /home/$USER/hackhub"
 
-        # Copia il docker-compose.yml sul server
+        echo "Copying docker-compose.yml..."
         scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no docker-compose.yml $USER@$HOST:/home/$USER/hackhub/docker-compose.yml
 
-        # Esegui i comandi remoti
+        echo "Executing remote commands..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
+          set -e
           cd /home/ubuntu/hackhub
 
           # Login al Docker registry
