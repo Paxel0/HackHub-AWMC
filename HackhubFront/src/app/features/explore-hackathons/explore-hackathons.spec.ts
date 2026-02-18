@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ExploreHackathonsComponent } from './explore-hackathons';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
+
+import { ExploreHackathonsComponent } from './explore-hackathons';
 
 describe('ExploreHackathonsComponent', () => {
   let component: ExploreHackathonsComponent;
@@ -9,7 +12,11 @@ describe('ExploreHackathonsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ExploreHackathonsComponent],
-      providers: [provideRouter([])]
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
 
