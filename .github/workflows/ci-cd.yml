@@ -86,8 +86,8 @@ jobs:
       run: echo "Linting skipped"
 
     - name: Esecuzione Test Unitari
-      # Configurato per ChromeHeadless per CI (definito in karma.conf.js)
-      run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      # Usa browser "ChromeHeadless" standard per la CI (il nuovo Karma lo riconosce)
+      run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
 
     - name: Build di produzione
       run: npm run build -- --configuration production
