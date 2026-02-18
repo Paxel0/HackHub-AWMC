@@ -159,41 +159,41 @@ jobs:
       env:
         OWNER: '${{ github.repository_owner }}'
 
-    - name: Copy docker-compose.yml to EC2
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        source: "docker-compose.yml"
-        target: "/home/${{ secrets.EC2_USER }}/hackhub"
+    - name: Deploy to EC2
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ubuntu
+      run: |
+        # Configura la chiave SSH privata
+        mkdir -p ~/.ssh/
+        echo "$PRIVATE_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        
+        # Aggiungi l'host ai known_hosts per evitare il prompt "Are you sure..."
+        ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
 
-    - name: SSH Remote Commands
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          # Crea la directory se non esiste
-          mkdir -p /home/${{ secrets.EC2_USER }}/hackhub
-          cd /home/${{ secrets.EC2_USER }}/hackhub
-          
-          # Login al registro (necessario se il repo è privato o per superare i limiti)
+        # create the target folder
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST "mkdir -p /home/$USER/hackhub"
+
+        # Copia il docker-compose.yml sul server
+        scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no docker-compose.yml $USER@$HOST:/home/$USER/hackhub/docker-compose.yml
+
+        # Esegui i comandi remoti
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
+          cd /home/ubuntu/hackhub
+
+          # Login al Docker registry
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          
-          # Crea il file .env con le variabili d'ambiente necessarie
-          # IMPORTANTE: In produzione, DB_PASSWORD e JWT_SECRET devono essere in github secrets
+
+          # Crea il file .env
           echo "DOCKER_IMAGE_BACKEND=ghcr.io/${{ env.OWNER_LC }}/hackhub-backend:latest" > .env
           echo "DOCKER_IMAGE_FRONTEND=ghcr.io/${{ env.OWNER_LC }}/hackhub-frontend:latest" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> .env
           echo "HACKHUB_APP_JWTSECRETBASE64=${{ secrets.JWT_SECRET_PROD }}" >> .env
           
-          # Pull delle nuove immagini
+          # Pull, Up e Prune
           docker-compose pull
-          
-          # Riavvio dei container
           docker-compose up -d --remove-orphans
-          
-          # Pulizia immagini vecchie
           docker image prune -f
+        EOF
