@@ -1,0 +1,173 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Job per il Backend (Java + Maven)
+  backend:
+    name: Build & Test Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./HackhubBack
+
+    steps:
+    - name: Checkout del codice
+      uses: actions/checkout@v4
+
+    - name: Setup Java JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Permessi di esecuzione per mvnw
+      run: chmod +x mvnw
+
+    - name: Build e Test con Maven
+      run: ./mvnw -B verify
+
+  # Job per il Frontend (Angular)
+  frontend:
+    name: Build & Test Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./HackhubFront
+
+    steps:
+    - name: Checkout del codice
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: HackhubFront/package-lock.json
+
+    - name: Installazione dipendenze
+      run: npm ci
+
+    - name: Linting
+      # Aggiungi se hai configurato linting, altrimenti commenta
+      # run: npm run lint
+      run: echo "Linting skipped"
+
+    - name: Esecuzione Test Unitari
+      # Configurato per ChromeHeadless per CI
+      run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
+
+    - name: Build di produzione
+      run: npm run build -- --configuration production
+
+  # Job per Docker (Build & Push su GitHub Container Registry)
+  docker:
+    name: Build & Push Docker Images
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout del codice
+      uses: actions/checkout@v4
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Lowercase Repository Owner
+      run: echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+      env:
+        OWNER: '${{ github.repository_owner }}'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Build & Push Backend
+    - name: Build and push Backend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./HackhubBack
+        file: ./HackhubBack/Dockerfile
+        push: true
+        tags: |
+          ghcr.io/${{ env.OWNER_LC }}/hackhub-backend:latest
+          ghcr.io/${{ env.OWNER_LC }}/hackhub-backend:${{ github.sha }}
+
+    # Build & Push Frontend
+    - name: Build and push Frontend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./HackhubFront
+        file: ./HackhubFront/Dockerfile
+        push: true
+        tags: |
+          ghcr.io/${{ env.OWNER_LC }}/hackhub-frontend:latest
+          ghcr.io/${{ env.OWNER_LC }}/hackhub-frontend:${{ github.sha }}
+
+  # Job di Deploy su EC2
+  deploy:
+    name: Deploy to AWS EC2
+    runs-on: ubuntu-latest
+    needs: [docker]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout del codice
+      uses: actions/checkout@v4
+
+    - name: Lowercase Repository Owner
+      run: echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+      env:
+        OWNER: '${{ github.repository_owner }}'
+
+    - name: Copy docker-compose.yml to EC2
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "docker-compose.yml"
+        target: "/home/${{ secrets.EC2_USER }}/hackhub"
+
+    - name: SSH Remote Commands
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          # Crea la directory se non esiste
+          mkdir -p /home/${{ secrets.EC2_USER }}/hackhub
+          cd /home/${{ secrets.EC2_USER }}/hackhub
+          
+          # Login al registro (necessario se il repo è privato o per superare i limiti)
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Crea il file .env con le variabili d'ambiente necessarie
+          # IMPORTANTE: In produzione, DB_PASSWORD e JWT_SECRET devono essere in github secrets
+          echo "DOCKER_IMAGE_BACKEND=ghcr.io/${{ env.OWNER_LC }}/hackhub-backend:latest" > .env
+          echo "DOCKER_IMAGE_FRONTEND=ghcr.io/${{ env.OWNER_LC }}/hackhub-frontend:latest" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> .env
+          echo "HACKHUB_APP_JWTSECRETBASE64=${{ secrets.JWT_SECRET_PROD }}" >> .env
+          
+          # Pull delle nuove immagini
+          docker-compose pull
+          
+          # Riavvio dei container
+          docker-compose up -d --remove-orphans
+          
+          # Pulizia immagini vecchie
+          docker image prune -f

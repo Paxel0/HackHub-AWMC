@@ -33,6 +33,7 @@ services:
 
   # ============ BACKEND (Spring Boot) ============
   backend:
+    image: ${DOCKER_IMAGE_BACKEND:-hackhub-backend:latest}
     build:
       context: ./HackhubBack
       dockerfile: Dockerfile
@@ -60,6 +61,7 @@ services:
 
   # ============ FRONTEND (Angular + Nginx) ============
   frontend:
+    image: ${DOCKER_IMAGE_FRONTEND:-hackhub-frontend:latest}
     build:
       context: ./HackhubFront
       dockerfile: Dockerfile
