@@ -7,10 +7,30 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # Job per il Backend (Java + Maven)
+  # ======================================================
+  # 1. Build & Test Backend (Java + Maven)
+  # ======================================================
   backend:
     name: Build & Test Backend
     runs-on: ubuntu-latest
+    
+    # Servizi container per il job (DB per i test)
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: hackhub_test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
+        # Health check per aspettare che il DB sia pronto
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     defaults:
       run:
         working-directory: ./HackhubBack
@@ -30,6 +50,12 @@ jobs:
       run: chmod +x mvnw
 
     - name: Build e Test con Maven
+      # Passiamo le variabili d'ambiente per collegarsi al servizio Postgres
+      env:
+        DB_URL: jdbc:postgresql://localhost:5432/hackhub_test_db
+        DB_USERNAME: test_user
+        DB_PASSWORD: test_password
+        HACKHUB_APP_JWTSECRETBASE64: "dGhpcy1pcy1hLXZlcnktc2VjcmV0LWtleS1mb3ItdGVzdGluZy1wdXJwb3Nlcw==" # A dummy base64 key
       run: ./mvnw -B verify
 
   # Job per il Frontend (Angular)
