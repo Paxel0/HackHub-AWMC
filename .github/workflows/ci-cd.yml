@@ -213,7 +213,7 @@ jobs:
           echo "HACKHUB_APP_JWTSECRETBASE64=${{ secrets.JWT_SECRET_PROD }}" >> .env
           
           # Pull, Up e Prune
-          docker-compose pull
-          docker-compose up -d --remove-orphans
+          docker compose pull
+          docker compose up -d --remove-orphans
           docker image prune -f
         EOF
