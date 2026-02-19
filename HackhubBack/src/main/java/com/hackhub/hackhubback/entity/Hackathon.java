@@ -41,7 +41,7 @@ public class Hackathon {
     @Column(name = "reward")
     private int reward;
 
-    protected Hackathon() {
+    public Hackathon() {
     }
 
     public Hackathon(String name, String description, LocalDate startDate, LocalDate endDate, String location) {
