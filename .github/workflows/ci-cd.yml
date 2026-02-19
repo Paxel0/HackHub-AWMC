@@ -114,7 +114,8 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Lowercase Repository Owner
-      run: echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+      id: owner
+      run: echo "lc=${OWNER,,}" >>$GITHUB_OUTPUT
       env:
         OWNER: '${{ github.repository_owner }}'
 
@@ -129,8 +130,8 @@ jobs:
         file: ./HackhubBack/Dockerfile
         push: true
         tags: |
-          ghcr.io/${{ env.OWNER_LC }}/hackhub-backend:latest
-          ghcr.io/${{ env.OWNER_LC }}/hackhub-backend:${{ github.sha }}
+          ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-backend:latest
+          ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-backend:${{ github.sha }}
 
     # Build & Push Frontend
     - name: Build and push Frontend
@@ -140,8 +141,8 @@ jobs:
         file: ./HackhubFront/Dockerfile
         push: true
         tags: |
-          ghcr.io/${{ env.OWNER_LC }}/hackhub-frontend:latest
-          ghcr.io/${{ env.OWNER_LC }}/hackhub-frontend:${{ github.sha }}
+          ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:latest
+          ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:${{ github.sha }}
 
   # Job di Deploy su EC2
   deploy:
@@ -149,13 +150,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: [docker]
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: read
 
     steps:
     - name: Checkout del codice
       uses: actions/checkout@v4
 
     - name: Lowercase Repository Owner
-      run: echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+      id: owner
+      run: echo "lc=${OWNER,,}" >>$GITHUB_OUTPUT
       env:
         OWNER: '${{ github.repository_owner }}'
 
@@ -194,8 +199,8 @@ jobs:
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
           # Crea il file .env
-          echo "DOCKER_IMAGE_BACKEND=ghcr.io/${{ env.OWNER_LC }}/hackhub-backend:latest" > .env
-          echo "DOCKER_IMAGE_FRONTEND=ghcr.io/${{ env.OWNER_LC }}/hackhub-frontend:latest" >> .env
+          echo "DOCKER_IMAGE_BACKEND=ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-backend:latest" > .env
+          echo "DOCKER_IMAGE_FRONTEND=ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:latest" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> .env
           echo "HACKHUB_APP_JWTSECRETBASE64=${{ secrets.JWT_SECRET_PROD }}" >> .env
           
