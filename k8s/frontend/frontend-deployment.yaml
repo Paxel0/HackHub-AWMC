@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackhub-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hackhub-frontend
+  template:
+    metadata:
+      labels:
+        app: hackhub-frontend
+    spec:
+      containers:
+      - name: hackhub-frontend
+        image: hackhub-frontend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
