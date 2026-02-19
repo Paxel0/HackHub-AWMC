@@ -172,74 +172,59 @@ jobs:
       run: |
         set -eux
 
-        echo "Configuring SSH key..."
+        # Setup SSH Key
         mkdir -p ~/.ssh/
         echo "$PRIVATE_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
-        
-        # Scansione chiavi host (con gestione errori)
         set +e
         ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>&1
         set -e
 
-        echo "Preparation: Creating directories..."
-        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST "mkdir -p /home/$USER/hackhub/k8s"
-
+        # STEP 1: Connessione SSH "Chirurgica" per liberare memoria SUBITO
+        echo "EMERGENCY CLEANUP: Stopping Docker to free RAM..."
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
+           # Spegne tutto quello che trova di Docker
+           docker kill \$(docker ps -q) || true
+           docker system prune -af || true
+           # Ferma anche K3s se era rimasto appeso
+           systemctl stop k3s || true
+        EOF
+        
+        # STEP 2: Ora che la RAM è libera, copiamo i file
         echo "Copying k8s manifests..."
-        # Copia ricorsiva della cartella k8s sulla EC2
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST "mkdir -p /home/$USER/hackhub/k8s"
         scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r k8s/* $USER@$HOST:/home/$USER/hackhub/k8s/
 
-        echo "Executing remote deployment..."
+        # STEP 3: Installazione e Deploy
+        echo "Installing K3s & Deploying..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
           set -e
           
-          # 1. Installazione K3s (se non presente)
+          # Install K3s (se manca)
           if ! command -v k3s &> /dev/null; then
-              echo "Installing K3s..."
-              curl -sfL https://get.k3s.io | sh -
-              sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+             curl -sfL https://get.k3s.io | sh -
+             sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+          else
+             systemctl start k3s # Riaccendiamolo se l'abbiamo spento sopra
           fi
           
           export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-
-          # 2. Spegnere Docker Compose vecchio (se attivo)
-          if [ -f /home/$USER/hackhub/docker-compose.yml ]; then
-             echo "Stopping old Docker Compose stack..."
-             # Ignora errori se docker-compose non c'è o container già spenti
-             docker-compose -f /home/$USER/hackhub/docker-compose.yml down || true
-          fi
-
-          # 3. Creazione Secrets in Kubernetes (Sostituiscono il file .env)
-          # Cancelliamo i vecchi secret per ricrearli aggiornati
-          sudo k3s kubectl delete secret postgres-secret backend-secrets --ignore-not-found
-
-          # Secret DB
-          sudo k3s kubectl create secret generic postgres-secret \
-            --from-literal=POSTGRES_PASSWORD='${{ secrets.DB_PASSWORD_PROD }}'
-
-          # Secret Variabili Backend (JWT, ecc)
-          # Nota: Qui creiamo un secret apposta per le env vars java
-          sudo k3s kubectl create secret generic backend-secrets \
-            --from-literal=HACKHUB_APP_JWTSECRETBASE64='${{ secrets.JWT_SECRET }}'
-
-          # 4. Patch Immagini nei deployment YAML
-          # K3s deve usare l'immagine giusta da GHCR
-          # Usiamo 'sed' per sostituire i nomi delle immagini nei file yaml sulla EC2
           
+          # Secrets
+          sudo k3s kubectl delete secret postgres-secret backend-secrets --ignore-not-found
+          sudo k3s kubectl create secret generic postgres-secret --from-literal=POSTGRES_PASSWORD='${{ secrets.DB_PASSWORD_PROD }}'
+          sudo k3s kubectl create secret generic backend-secrets --from-literal=HACKHUB_APP_JWTSECRETBASE64='${{ secrets.JWT_SECRET }}'
+
+          # Patch Image Names
           FULL_IMAGE_BACK="ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-backend:latest"
           FULL_IMAGE_FRONT="ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:latest"
-          
-          # Sostituisce 'image: hackhub-backend:latest' con l'URL completo di GHCR
           sed -i "s|image: hackhub-backend:latest|image: \$FULL_IMAGE_BACK|g" /home/$USER/hackhub/k8s/backend/backend-deployment.yaml
           sed -i "s|image: hackhub-frontend:latest|image: \$FULL_IMAGE_FRONT|g" /home/$USER/hackhub/k8s/frontend/frontend-deployment.yaml
 
-          # 5. Apply su Kubernetes
-          echo "Applying Kubernetes Manifests..."
+          # Apply
           sudo k3s kubectl apply -R -f /home/$USER/hackhub/k8s/
           
-          # Force restart per scaricare la nuova immagine (se le tag sono 'latest')
+          # Force Restart
           sudo k3s kubectl rollout restart deployment hackhub-backend
           sudo k3s kubectl rollout restart deployment hackhub-frontend
-
-          echo "Deployment successful! 🚀"
         EOF
