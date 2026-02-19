@@ -178,7 +178,15 @@ jobs:
         chmod 600 ~/.ssh/deploy_key
         
         echo "Adding host to known_hosts..."
-        ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+        if [ -z "$HOST" ]; then
+          echo "Error: EC2_HOST secret is not set"
+          exit 1
+        fi
+        ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>&1
+        if [ $? -ne 0 ]; then
+          echo "Error: Failed to scan host $HOST"
+          exit 1
+        fi
 
         echo "Testing SSH connectivity..."
         # Prova a connetterti e lanciare un comando semplice
@@ -191,12 +199,12 @@ jobs:
         scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no docker-compose.yml $USER@$HOST:/home/$USER/hackhub/docker-compose.yml
 
         echo "Executing remote commands..."
-        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << 'EOF'
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
           set -e
           cd /home/ubuntu/hackhub
 
           # Login al Docker registry
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
           # Crea il file .env
           echo "DOCKER_IMAGE_BACKEND=ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-backend:latest" > .env
