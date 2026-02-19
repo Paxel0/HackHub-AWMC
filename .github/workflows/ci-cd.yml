@@ -168,7 +168,7 @@ jobs:
       env:
         PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
         HOST: ${{ secrets.EC2_HOST }}
-        USER: ubuntu
+        USER: ${{ secrets.EC2_USER }}
       run: |
         set -eux  # Abilita il debug e interrompe lo script al primo errore
         
@@ -182,9 +182,16 @@ jobs:
           echo "Error: EC2_HOST secret is not set"
           exit 1
         fi
+        
+        # Disabilita set -e temporaneamente per gestire l'errore di ssh-keyscan
+        set +e
         ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>&1
-        if [ $? -ne 0 ]; then
-          echo "Error: Failed to scan host $HOST"
+        SCAN_EXIT_CODE=$?
+        set -e
+        
+        if [ $SCAN_EXIT_CODE -ne 0 ]; then
+          echo "Error: Failed to scan host $HOST (Exit code: $SCAN_EXIT_CODE)"
+          echo "Verify that the host is reachable and the IP/DNS is correct."
           exit 1
         fi
 
@@ -201,7 +208,7 @@ jobs:
         echo "Executing remote commands..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
           set -e
-          cd /home/ubuntu/hackhub
+          cd /home/$USER/hackhub
 
           # Login al Docker registry
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
@@ -210,7 +217,14 @@ jobs:
           echo "DOCKER_IMAGE_BACKEND=ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-backend:latest" > .env
           echo "DOCKER_IMAGE_FRONTEND=ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:latest" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> .env
-          echo "HACKHUB_APP_JWTSECRETBASE64=${{ secrets.JWT_SECRET_PROD }}" >> .env
+          # Usa printf per gestire caratteri speciali nel segreto JWT
+          printf "HACKHUB_APP_JWTSECRETBASE64=%s\n" "${{ secrets.JWT_SECRET }}" >> .env
+          
+          # Debug (rimuovere in produzione se sensibile, ma utile per verificare se è vuoto)
+          if grep -q "HACKHUB_APP_JWTSECRETBASE64=$" .env; then
+            echo "Error: JWT_SECRET is empty or not set in GitHub Secrets!"
+            exit 1
+          fi
           
           # Pull, Up e Prune
           docker compose pull
