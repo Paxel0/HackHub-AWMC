@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: hackhub-frontend
 spec:
-  type: LoadBalancer
   selector:
     app: hackhub-frontend
   ports:
