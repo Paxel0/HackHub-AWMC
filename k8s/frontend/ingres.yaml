@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   name: hackhub-ingress
   annotations:
-    # Questa annotazione è magica per K3s/Traefik
-    #traefik.ingress.kubernetes.io/router.entrypoints: web
+    # Forza l'uso dell'entrypoint HTTP (web)
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
   - http:
