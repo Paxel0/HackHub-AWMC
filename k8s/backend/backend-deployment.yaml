@@ -19,9 +19,11 @@ spec:
         ports:
         - containerPort: 8080
         env:
-        # Legge il JWT Secret da Kubernetes (creato dalla CI)
+        # Tuning memoria JVM per istanze con poca RAM
         - name: JAVA_TOOL_OPTIONS
-          value: "-Xmx512m -Xms256m"  <-- Importante!
+          value: "-Xmx512m -Xms256m"
+        
+        # Legge il JWT Secret da Kubernetes
         - name: HACKHUB_APP_JWTSECRETBASE64
           valueFrom:
             secretKeyRef:
