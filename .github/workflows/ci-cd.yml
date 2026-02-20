@@ -187,7 +187,7 @@ jobs:
            docker kill \$(docker ps -q) || true
            docker system prune -af || true
            # Ferma anche K3s se era rimasto appeso
-           systemctl stop k3s || true
+           sudo systemctl stop k3s || true
         EOF
         
         # STEP 2: Ora che la RAM è libera, copiamo i file
@@ -205,7 +205,7 @@ jobs:
              curl -sfL https://get.k3s.io | sh -
              sudo chmod 644 /etc/rancher/k3s/k3s.yaml
           else
-             systemctl start k3s # Riaccendiamolo se l'abbiamo spento sopra
+             sudo systemctl start k3s # Riaccendiamolo se l'abbiamo spento sopra
           fi
           
           export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
