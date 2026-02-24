@@ -1,4 +1,3 @@
-# ========== BUILD STAGE ==========
 FROM node:20-alpine AS builder
 WORKDIR /app
 
@@ -11,10 +10,9 @@ RUN npm ci --legacy-peer-deps
 # Copia sorgenti
 COPY . .
 
-# Build produzione Angular
+# Build di produzione dell'app Angular
 RUN npm run build -- --configuration=production
 
-# ========== RUNTIME STAGE ==========
 FROM nginx:alpine AS runtime
 
 # Rimuovi config nginx default
@@ -23,10 +21,10 @@ RUN rm /etc/nginx/conf.d/default.conf
 # Copia config nginx personalizzata
 COPY nginx.conf /etc/nginx/conf.d/
 
-# Copia build Angular (output path basato su angular.json)
+# Copia build Angular (basato su angular.json)
 COPY --from=builder /app/dist/FrontEnd/browser /usr/share/nginx/html
 
-# Sicurezza: imposta permessi corretti
+# Sicurezza: imposta permessi
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chmod -R 755 /usr/share/nginx/html && \
     chown -R nginx:nginx /var/cache/nginx && \

@@ -1,3 +1,4 @@
+# Service Kubernetes per esporre il frontend Angular di HackHub all'interno del cluster
 apiVersion: v1
 kind: Service
 metadata:

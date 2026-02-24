@@ -1,15 +1,5 @@
-# ============================================
-# HackHub - Docker Compose Configuration
-# ============================================
-# Uso:
-#   1. Copia .env.example in .env e configura i valori
-#   2. Esegui: docker-compose up -d
-#   3. Frontend: http://localhost
-#   4. Backend API: http://localhost:8080/api
-# ============================================
-
 services:
-  # ============ DATABASE ============
+  # DATABASE
   postgres:
     image: postgres:15-alpine
     container_name: hackhub-db
@@ -31,7 +21,7 @@ services:
       - hackhub-network
     restart: unless-stopped
 
-  # ============ BACKEND (Spring Boot) ============
+  # BACKEND (Spring Boot)
   backend:
     image: ${DOCKER_IMAGE_BACKEND:-hackhub-backend:latest}
     build:
@@ -59,7 +49,7 @@ services:
       retries: 3
       start_period: 60s
 
-  # ============ FRONTEND (Angular + Nginx) ============
+  # FRONTEND (Angular + Nginx)
   frontend:
     image: ${DOCKER_IMAGE_FRONTEND:-hackhub-frontend:latest}
     build:
@@ -75,12 +65,12 @@ services:
       - hackhub-network
     restart: unless-stopped
 
-# ============ VOLUMES ============
+# VOLUMI
 volumes:
   postgres_data:
     name: hackhub-postgres-data
 
-# ============ NETWORKS ============
+# NETWORKS
 networks:
   hackhub-network:
     name: hackhub-network

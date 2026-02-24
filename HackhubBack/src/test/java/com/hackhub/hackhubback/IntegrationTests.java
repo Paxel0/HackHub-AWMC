@@ -38,7 +38,7 @@ class IntegrationTests {
 
     @BeforeEach
     void setUp() {
-        // Pulisce il DB (opzionale grazie a @Transactional, ma utile per sicurezza)
+        // Pulisce il DB (utile per sicurezza)
         userRepository.deleteAll();
         hackathonRepository.deleteAll();
 
@@ -73,14 +73,14 @@ class IntegrationTests {
 
     @Test
     void shouldSubscribeSuccessfullyIfNotSubscribed() {
-        // Act: L'utente si iscrive all'hackathon 1
+        // Azione: L'utente si iscrive all'hackathon 1
         var result = subscriptionService.toggleSubscription(testUser.getUsername(), hackathon1.getId());
 
         // Assert
         assertThat(result.status()).isEqualTo(HackathonSubscriptionService.ToggleStatus.SUBSCRIBED);
         
         // Verifica chiamando il servizio (o repository) che l'utente sia iscritto
-        // Nota: ricarichiamo l'utente dal DB perché l'istanza in memoria 'testUser' potrebbe non essere aggiornata
+        // Ricarichiamo l'utente dal DB perché l'istanza in memoria 'testUser' potrebbe non essere aggiornata
         User updatedUser = userRepository.findById(testUser.getId()).orElseThrow();
         assertThat(updatedUser.getSubscribedHackathon()).isNotNull();
         assertThat(updatedUser.getSubscribedHackathon().getId()).isEqualTo(hackathon1.getId());
@@ -88,10 +88,10 @@ class IntegrationTests {
 
     @Test
     void shouldUnsubscribeIfAlreadySubscribedToSameHackathon() {
-        // Arrange: L'utente è già iscritto all'hackathon 1
+        // Avviso: L'utente è già iscritto all'hackathon 1
         subscriptionService.toggleSubscription(testUser.getUsername(), hackathon1.getId());
         
-        // Act: L'utente clicca di nuovo (toggle) sullo stesso hackathon
+        // Azione: L'utente clicca di nuovo (toggle) sullo stesso hackathon
         var result = subscriptionService.toggleSubscription(testUser.getUsername(), hackathon1.getId());
 
         // Assert
@@ -104,10 +104,10 @@ class IntegrationTests {
 
     @Test
     void shouldReturnConflictIfSubscribedToAnotherHackathon() {
-        // Arrange: L'utente è iscritto all'hackathon 1
+        // Avviso: L'utente è iscritto all'hackathon 1
         subscriptionService.toggleSubscription(testUser.getUsername(), hackathon1.getId());
 
-        // Act: L'utente prova a iscriversi all'hackathon 2
+        // Azione: L'utente prova a iscriversi all'hackathon 2
         var result = subscriptionService.toggleSubscription(testUser.getUsername(), hackathon2.getId());
 
         // Assert

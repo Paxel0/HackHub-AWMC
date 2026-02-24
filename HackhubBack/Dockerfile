@@ -1,4 +1,3 @@
-# ========== BUILD STAGE ==========
 FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
 
@@ -7,27 +6,26 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
-# Rendi eseguibile mvnw e scarica dipendenze (cached se pom.xml non cambia)
+# Rendi eseguibile mvnw e scarica dipendenze
 RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
 
 # Copia il codice sorgente
 COPY src src
 
-# Build dell'applicazione (skip test per velocità, li eseguiamo in CI)
+# Build dell'applicazione
 RUN ./mvnw package -DskipTests -B
 
-# ========== RUNTIME STAGE ==========
 FROM eclipse-temurin:21-jre-alpine AS runtime
 WORKDIR /app
 
-# Sicurezza: crea utente non-root
+# Sicurezza: creazione di un utente non privilegiato per limitare l'accesso a terze parti
 RUN addgroup -g 1001 -S appgroup && \
     adduser -u 1001 -S appuser -G appgroup
 
-# Copia solo il JAR dalla build stage
+# Copia solo il JAR (in /app/target)
 COPY --from=builder /app/target/*.jar app.jar
 
-# Cambia ownership
+# Sicurezza: assicurarsi che l'app sia di proprietà dell'utente non privilegiato
 RUN chown -R appuser:appgroup /app
 USER appuser
 

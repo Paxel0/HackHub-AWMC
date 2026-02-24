@@ -1,3 +1,4 @@
+# ConfigMap Kubernetes per configurare i parametri del database Postgres (nome DB e utente)
 apiVersion: v1
 kind: ConfigMap
 metadata:

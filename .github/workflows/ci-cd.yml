@@ -7,14 +7,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # ======================================================
-  # 1. Build & Test Backend (Java + Maven)
-  # ======================================================
+  # Build & Test Backend (Java + Maven)
   backend:
     name: Build & Test Backend
     runs-on: ubuntu-latest
     
-    # Servizi container per il job (DB per i test)
+    # Container di servizio per i test automatici con Postgres (DB)
     services:
       postgres:
         image: postgres:15-alpine
@@ -50,15 +48,15 @@ jobs:
       run: chmod +x mvnw
 
     - name: Build e Test con Maven
-      # Passiamo le variabili d'ambiente per collegarsi al servizio Postgres
+      # Passiamo le variabili d'ambiente per collegarsi a Postgres
       env:
         DB_URL: jdbc:postgresql://localhost:5432/hackhub_test_db
         DB_USERNAME: test_user
         DB_PASSWORD: test_password
-        HACKHUB_APP_JWTSECRETBASE64: "dGhpcy1pcy1hLXZlcnktc2VjcmV0LWtleS1mb3ItdGVzdGluZy1wdXJwb3Nlcw==" # A dummy base64 key
+        HACKHUB_APP_JWTSECRETBASE64: "dGhpcy1pcy1hLXZlcnktc2VjcmV0LWtleS1mb3ItdGVzdGluZy1wdXJwb3Nlcw=="
       run: ./mvnw -B verify
 
-  # Job per il Frontend (Angular)
+  # Container di servizio per i test automatici del frontend (Angular)
   frontend:
     name: Build & Test Frontend
     runs-on: ubuntu-latest
@@ -81,18 +79,18 @@ jobs:
       run: npm ci
 
     - name: Linting
-      # Aggiungi se hai configurato linting, altrimenti commenta
-      # run: npm run lint
-      run: echo "Linting skipped"
+      # Controlla la qualità del codice (può essere disabilitato se rallenta troppo la pipeline)
+      run: npm run lint
+      # run: echo "Linting skipped"
 
     - name: Esecuzione Test Unitari
-      # Usa browser "ChromeHeadless" standard per la CI (il nuovo Karma lo riconosce)
+      # Usa browser "ChromeHeadless" (per l'esecuzione automatica in ambiente CI senza interfaccia grafica)
       run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
 
     - name: Build di produzione
       run: npm run build -- --configuration production
 
-  # Job per Docker (Build & Push su GitHub Container Registry)
+  # Container di servizio per i test automatici per Docker (verifica che le immagini si costruiscano correttamente)
   docker:
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
@@ -144,7 +142,7 @@ jobs:
           ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:latest
           ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:${{ github.sha }}
 
-    # Job di Deploy su EC2 con K3s (Kubernetes)
+    # Container di servizio per i test automatici di Deploy su EC2 con K3s (versione Kubernetes più leggera)
   deploy:
     name: Deploy to AWS EC2 (k3s)
     runs-on: ubuntu-latest
@@ -180,7 +178,7 @@ jobs:
         ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>&1
         set -e
 
-        # STEP 1: Connessione SSH "Chirurgica" per liberare memoria SUBITO
+        # Connessione SSH per liberare memoria sulla macchina EC2 (a volte K3s o Docker rimangono appesi e consumano RAM, causando problemi di deploy)
         echo "EMERGENCY CLEANUP: Stopping Docker to free RAM..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
            # Spegne tutto quello che trova di Docker
@@ -190,12 +188,12 @@ jobs:
            sudo systemctl stop k3s || true
         EOF
         
-        # STEP 2: Ora che la RAM è libera, copiamo i file
+        # Ora che la RAM è libera, copiamo i file
         echo "Copying k8s manifests..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST "mkdir -p /home/$USER/hackhub/k8s"
         scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r k8s/* $USER@$HOST:/home/$USER/hackhub/k8s/
 
-        # STEP 3: Installazione e Deploy
+        # Installazione e Deploy
         echo "Installing K3s & Deploying..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
           set -e
@@ -215,16 +213,16 @@ jobs:
           sudo k3s kubectl create secret generic postgres-secret --from-literal=POSTGRES_PASSWORD='${{ secrets.DB_PASSWORD_PROD }}'
           sudo k3s kubectl create secret generic backend-secrets --from-literal=HACKHUB_APP_JWTSECRETBASE64='${{ secrets.JWT_SECRET }}'
 
-          # Patch Image Names
+          # Aggioirna le immagini prendendi le ultime versioni da GitHub
           FULL_IMAGE_BACK="ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-backend:latest"
           FULL_IMAGE_FRONT="ghcr.io/${{ steps.owner.outputs.lc }}/hackhub-frontend:latest"
           sed -i "s|image: hackhub-backend:latest|image: \$FULL_IMAGE_BACK|g" /home/$USER/hackhub/k8s/backend/backend-deployment.yaml
           sed -i "s|image: hackhub-frontend:latest|image: \$FULL_IMAGE_FRONT|g" /home/$USER/hackhub/k8s/frontend/frontend-deployment.yaml
 
-          # Apply
+          # Crea o aggiorna le risorse Kubernetes (Deployment, Service, Ingress)
           sudo k3s kubectl apply -R -f /home/$USER/hackhub/k8s/
           
-          # Force Restart
+          # Riavvio forzato dei pod per prendere le nuove immagini
           sudo k3s kubectl rollout restart deployment hackhub-backend
           sudo k3s kubectl rollout restart deployment hackhub-frontend
         EOF
