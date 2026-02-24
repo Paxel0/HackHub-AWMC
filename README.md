@@ -27,7 +27,7 @@ Il progetto adotta un approccio Cloud-Native, containerizzato e orchestrato, pro
 
 • **Database**: PostgreSQL 15, Relazionale, persistenza dati affidabile.
 
-• **Container**: Docker per Containerizzazione di tutti i servizi (è stato realizzato un container per Frontend, Backend, Database ).
+• **Container**: Docker per Containerizzazione di tutti i servizi (è stato realizzato un container per Frontend, Backend, Database).
 
 • **Orchestratore**: Kubernetes (K8s) / ECS per la gestione dei pod e scaling (orizzontale)
 
@@ -82,7 +82,7 @@ La struttura logica del frontend è organizzata nel seguente modo:
 
 L'intera applicazione è containerizzata per garantire la portabilità tra sviluppo (locale) e produzione (AWS Cloud). Abbiamo adottato le seguenti strategie:
 
-• **Immagini Leggere (Alpine Linux)**: Utilizziamo immagini base alpine (sia per JDK che per Nginx) per ridurre drasticamente la dimensione dei container e la superficie di attacco.
+• **Immagini leggere (Alpine Linux)**: Utilizziamo immagini base alpine (sia per JDK che per Nginx) per ridurre la dimensione dei container.
 
 • **Multi-stage Build**: Per il Frontend il Dockerfile utilizza due stadi:
 
@@ -135,7 +135,7 @@ L'applicazione è ospitata su un'istanza Amazon EC2, configurata come nodo singo
  - Sistema Operativo: Ubuntu
 
 2. **Networking e Security Group (Firewall)**
-L'istanza è protetta da un Security Group che implementa il principio del "minimo privilegio", aprendo solo le porte necessarie:
+L'istanza è protetta da un Security Group che apre solo le porte necessarie:
  - Porta 22 (SSH): Accesso limitato tramite chiave RSA per il deploy automatizzato da GitHub Actions.
  - Porta 80 (HTTP): Esposizione pubblica gestita dall'Ingress Controller (Traefik).
  - Porta 8080 (custom TCP):Aperta per permettere l'accesso diretto alle API del Backend durante le fasi di testing e integrazione, facilitando il debugging senza l'interposizione dei livelli di routing del cluster.
@@ -148,6 +148,7 @@ L'istanza è protetta da un Security Group che implementa il principio del "mini
 4. **Ottimizzazione e Gestione della Memoria**
 La t3 small ha solo 2 GB di RAM ma il progetto adotta strategie di ottimizzazione avanzate per evitare saturazioni:
  - Regolazione JVM: Il backend Spring Boot è configurato con limiti espliciti sulla memoria heap.
+
  - Pipeline: Il workflow di CD include uno step di Emergency Cleanup prima di ogni deploy. Questo comando SSH pulisce preventivamente i residui di build precedenti e le immagini Docker orfane, assicurando che il rollout dei nuovi Pod avvenga sempre in un ambiente pulito e con RAM disponibile.
 
 
@@ -157,7 +158,7 @@ Istruzioni per avviare il progetto HackHub in due modalità:
 
 
 
-1.  ### Locale con Docker (Test rapidi). ###
+1. ### Locale con Docker (Test rapidi). ###
 **Prerequisiti**
 
 Installare gli strumenti necessari:
@@ -179,12 +180,19 @@ Apri il terminale e per clonare il repository lancia:
 *cd HackHub-AWMC*
 
 **Configurazione variabili d’ambiente**
-Crea il file .env partendo dall'esempio fornito. Questo file conterrà le credenziali del database e i secret JWT. 
+
+Crea il file *.env* partendo dall'esempio fornito. Questo file conterrà le credenziali del database e i secret JWT. 
+
 Incolla:
+
 DB_NAME=nome_db
+
 DB_USERNAME=username
+
 DB_PASSWORD=password
+
 HACKHUB_APP_JWTSECRETBASE64=’Stringa accettabile’
+
 SPRING_PROFILE=prod
 
 **Avvio con Docker Compose**
@@ -215,7 +223,7 @@ Una volta che la pipeline di GitHub ha finito il deploy (segno di spunta verde s
 
 **L'indirizzo IP/DNS**: *http://3.93.185.107*
 
-➢ Apri il Browser→ Incolla l'indirizzo nella barra degli indirizzi del browser. 
+Apri il Browser→ Incolla l'indirizzo nella barra degli indirizzi del browser. 
     
 #### **L’app  è funzionante nel browser** ####
      
@@ -228,22 +236,26 @@ Il diagramma mostra il funzionamento di un’applicazione web containerizzata co
 
 **Flusso principale:**
 1. Utente → Frontend
-L’utente accede tramite browser e invia una    richiesta HTTP.
+L’utente accede tramite browser e invia una richiesta HTTP.
+
 La richiesta arriva a un container frontend con Nginx, che serve i file statici dell’applicazione Angular (SPA).
 
-2. Frontend → Backend
+3. Frontend → Backend
 L’app Angular, eseguita nel browser, invia richieste REST API (JSON) al backend quando servono dati o operazioni.
 
-3. Sicurezza
+4. Sicurezza
 Le richieste passano attraverso Spring Security, che verifica l’autenticazione tramite JWT.
 
-4. Backend → Database
+5. Backend → Database
 Se la richiesta è valida, la Spring Boot application elabora la logica.
+
 Usa JPA/Hibernate per leggere o scrivere dati nel database PostgreSQL 15.
 
-5. Risposta
+6. Risposta
 Il database restituisce i dati al backend.
+
 Il backend invia la risposta al frontend.
+
 Il frontend aggiorna l’interfaccia utente.
 
 
@@ -263,27 +275,34 @@ Questo aggiornamento attiva automaticamente la pipeline CI/CD.
 
 2. CI/CD Pipeline → Build e pubblicazione immagini
 GitHub Actions esegue il processo di build e test dell’applicazione.
+
 Vengono create le immagini Docker del frontend e del backend.
+
 Le immagini vengono poi pubblicate su un registry, come Docker Hub o Amazon ECR.
 
-3. Registry → Cluster AWS EKS
+4. Registry → Cluster AWS EKS
 Il cluster Kubernetes su AWS (Amazon EKS) scarica (pull) le immagini Docker dal registry.
+
 Vengono creati i pod per eseguire l’applicazione:
-Frontend Pods (repliche multiple per scalabilità)
-Backend Pods (repliche multiple per scalabilità)
+ - Frontend Pods (repliche multiple per scalabilità)
+ - Backend Pods (repliche multiple per scalabilità)
 
 4. Utente → Load Balancer → Pod
 L’utente accede all’applicazione tramite Internet.
+
 La richiesta arriva all’AWS Load Balancer.
+
 Il Load Balancer instrada il traffico:  verso i pod frontend per l’interfaccia utente o verso i pod backend per le richieste API (/api)
 
-5. Backend → Database
+6. Backend → Database
 I pod backend elaborano la logica applicativa.
 Quando necessario, accedono al database PostgreSQL ospitato su Amazon RDS per leggere o salvare i dati.
 
-6. Risposta
+7. Risposta
 Il database restituisce i dati al backend.
+
 Il backend invia la risposta al frontend.
+
 Il frontend restituisce il risultato all’utente tramite il browser.
 
 
