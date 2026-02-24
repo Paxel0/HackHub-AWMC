@@ -157,6 +157,25 @@ jobs:
     - name: Checkout del codice
       uses: actions/checkout@v4
 
+    - name: Configura credenziali AWS
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Ottieni IP pubblico del Runner
+      id: ip
+      run: echo "ipv4=$(curl -s https://checkip.amazonaws.com)" >> $GITHUB_OUTPUT
+
+    - name: Whitelist IP su Security Group (Porta 22)
+      run: |
+        aws ec2 authorize-security-group-ingress \
+          --group-id ${{ secrets.EC2_SG_ID }} \
+          --protocol tcp \
+          --port 22 \
+          --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
     - name: Lowercase Repository Owner
       id: owner
       run: echo "lc=${OWNER,,}" >>$GITHUB_OUTPUT
@@ -179,17 +198,15 @@ jobs:
         ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>&1
         set -e
 
-        # STEP 1: Connessione SSH "Chirurgica" per liberare memoria SUBITO
+        # STEP 1: Connessione SSH per liberare memoria
         echo "EMERGENCY CLEANUP: Stopping Docker to free RAM..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
-           # Spegne tutto quello che trova di Docker
            docker kill \$(docker ps -q) || true
            docker system prune -af || true
-           # Ferma anche K3s se era rimasto appeso
            sudo systemctl stop k3s || true
         EOF
         
-        # STEP 2: Ora che la RAM è libera, copiamo i file
+        # STEP 2: Copiamo i file k8s
         echo "Copying k8s manifests..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST "mkdir -p /home/$USER/hackhub/k8s"
         scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r k8s/* $USER@$HOST:/home/$USER/hackhub/k8s/
@@ -198,18 +215,16 @@ jobs:
         echo "Installing K3s & Deploying..."
         ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $USER@$HOST << EOF
           set -e
-          
-          # Install K3s (se manca)
           if ! command -v k3s &> /dev/null; then
              curl -sfL https://get.k3s.io | sh -
              sudo chmod 644 /etc/rancher/k3s/k3s.yaml
           else
-             sudo systemctl start k3s # Riaccendiamolo se l'abbiamo spento sopra
+             sudo systemctl start k3s
           fi
           
           export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
           
-          # Secrets
+          # Secrets (Usa i segreti passati dal workflow)
           sudo k3s kubectl delete secret postgres-secret backend-secrets --ignore-not-found
           sudo k3s kubectl create secret generic postgres-secret --from-literal=POSTGRES_PASSWORD='${{ secrets.DB_PASSWORD_PROD }}'
           sudo k3s kubectl create secret generic backend-secrets --from-literal=HACKHUB_APP_JWTSECRETBASE64='${{ secrets.JWT_SECRET }}'
@@ -227,3 +242,12 @@ jobs:
           sudo k3s kubectl rollout restart deployment hackhub-backend
           sudo k3s kubectl rollout restart deployment hackhub-frontend
         EOF
+
+    - name: Rimuovi IP dalla Whitelist (Sempre eseguito)
+      if: always() # Importante: esegui anche se il deploy fallisce o viene annullato
+      run: |
+        aws ec2 revoke-security-group-ingress \
+          --group-id ${{ secrets.EC2_SG_ID }} \
+          --protocol tcp \
+          --port 22 \
+          --cidr ${{ steps.ip.outputs.ipv4 }}/32
