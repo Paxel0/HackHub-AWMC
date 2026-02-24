@@ -9,14 +9,20 @@ Funzionalità Principali
 • Architettura Moderna: Separazione netta tra Frontend (SPA) e Backend (API REST).
 
 Architettura del Sistema
-Il progetto adotta un approccio Cloud-Native, containerizzato e orchestrato, pronto per il deployment su AWS.
-Il sistema segue un'architettura stateless a microservizi containerizzati gestita tramite Docker:
+Il progetto adotta un approccio Cloud-Native, containerizzato e orchestrato, pronto per il deployment su AWS. Il sistema segue un'architettura stateless a microservizi containerizzati gestita tramite Docker:
+
 • Frontend: Angular (Single Page Application) servito tramite Nginx (presenti Typescript, SCSS, Bootstrap 5)
+
 • Backend: Spring Boot (Java 21) che espone API REST, Spring Security, JPA, JWT Authentication.
+
 • Database: PostgreSQL 15, Relazionale, persistenza dati affidabile.
+
 • Container: Docker per Containerizzazione di tutti i servizi (è stato realizzato un container per Frontend, Backend, Database ).
+
 • Orchestratore: Kubernetes (K8s) / ECS per la gestione dei pod e scaling (orizzontale)
+
 • Cloud Provider: AWS, Hosting tramite EC2
+
 • Pipeline CI/CD: GitHub Actions,  Pipeline automatizzata di Build, Test e Push su Docker Hub.
 
 Scelte Progettuali
