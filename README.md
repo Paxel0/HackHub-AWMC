@@ -182,6 +182,7 @@ Il frontend aggiorna l’interfaccia utente.
 
 
 Il diagramma mostra il funzionamento della pipeline CI/CD e del deployment su AWS EKS di un’applicazione containerizzata composta da frontend, backend e database.
+<img width="8192" height="2056" alt="CI_CD Pipeline for AWS EKS-2026-02-24-103649" src="https://github.com/user-attachments/assets/18c5746d-eae4-4cd4-9d30-bdf413a3734d" />
 
 Flusso principale:
 1. Developer → GitHub
