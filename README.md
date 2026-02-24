@@ -3,7 +3,7 @@
 HackHub è una piattaforma full-stack progettata per la gestione e la partecipazione agli hackathon. L'applicazione permette agli utenti di iscriversi e gestire le competizioni in modo centralizzato.
 
 
-**Funzionalità Principali**
+ ## **Funzionalità Principali** ##
 
 
 • **Gestione Hackathon**: visualizzazione e partecipazione agli eventi.
@@ -16,7 +16,7 @@ HackHub è una piattaforma full-stack progettata per la gestione e la partecipaz
 
 
 
-**Architettura del Sistema**
+## **Architettura del Sistema** ##
 
 
 Il progetto adotta un approccio Cloud-Native, containerizzato e orchestrato, pronto per il deployment su AWS. Il sistema segue un'architettura stateless a microservizi containerizzati gestita tramite Docker:
@@ -36,9 +36,9 @@ Il progetto adotta un approccio Cloud-Native, containerizzato e orchestrato, pro
 • **Pipeline CI/CD**: GitHub Actions,  Pipeline automatizzata di Build, Test e Push su Docker Hub.
 
 
-**Scelte Progettuali**
+## **Scelte Progettuali** ##
 
-• **BACKEND LAYERED ARCHITECTURE**: 
+• ### **BACKEND LAYERED ARCHITECTURE** ### : 
 
 Il codice Java è strutturato in livelli logici per garantire manutenibilità, separazione delle responsabilità e testabilità.
 
@@ -53,12 +53,12 @@ Il codice Java è strutturato in livelli logici per garantire manutenibilità, s
 ➢ **Security**: Configurazione Spring Security e filtri JWT.
 
 
-• **STATELESS AUTHENTICATION: SICUREZZA (JWT)**
+• ### **STATELESS AUTHENTICATION: SICUREZZA (JWT)** ### 
 
 Per garantire la sicurezza e la scalabilità della piattaforma, è stato implementato un sistema di autenticazione stateless basato sullo standard JWT (JSON Web Token). Questa architettura permette di gestire le sessioni utente in modo sicuro e disaccoppiato, utilizzando il token come chiave d'accesso per le risorse protette. 
 
 
-• **FRONTEND: ANGULAR & NGINX**
+• ### **FRONTEND: ANGULAR & NGINX** ### 
 
 
 ➢ **Angular**: Framework frontend utilizzato per sviluppare l’interfaccia utente come Single Page Application (SPA), con gestione delle rotte, componenti e servizi.
@@ -77,7 +77,7 @@ La struttura logica del frontend è organizzata nel seguente modo:
 
 
 
-• **CONTAINERIZZAZIONE (DOCKER)**
+• ### **CONTAINERIZZAZIONE (DOCKER)** ### 
 
 
 L'intera applicazione è containerizzata per garantire la portabilità tra sviluppo (locale) e produzione (AWS Cloud). Abbiamo adottato le seguenti strategie:
@@ -94,7 +94,7 @@ L'intera applicazione è containerizzata per garantire la portabilità tra svilu
 
 
 
-• **ORCHESTRAZIONE (KUBERNETES)**
+• ### **ORCHESTRAZIONE (KUBERNETES)** ### 
 
 
 Per la gestione dei container abbiamo scelto K3s, una distribuzione certificata di Kubernetes leggera e ottimizzata per il risparmio di risorse. L'infrastruttura è ospitata su un'istanza AWS EC2 e gestita tramite:
@@ -110,7 +110,7 @@ Per la gestione dei container abbiamo scelto K3s, una distribuzione certificata 
 
 
 
-• **PIPELINE CI/CD**
+• ### **PIPELINE CI/CD** ### 
 
 
 Il ciclo di vita del software è automatizzato tramite una pipeline di Continuous Integration e Continuous Deployment, articolata in quattro fasi principali:
@@ -124,7 +124,7 @@ Il ciclo di vita del software è automatizzato tramite una pipeline di Continuou
 ➢ **Continuous Deployment (CD)**: In caso di push sul branch main, la pipeline si connette via SSH al server AWS EC2, aggiorna i manifest Kubernetes e attiva un rollout restart del cluster K3s, garantendo che l'ultima versione dell'app sia immediatamente online senza interventi manuali.
 
 
-• **CONFIGURAZIONE AWS EC2**
+• ### **CONFIGURAZIONE AWS EC2** ### 
 
 
 L'applicazione è ospitata su un'istanza Amazon EC2, configurata come nodo singolo per il cluster K3s.
@@ -151,7 +151,7 @@ Nonostante i 2GB di RAM della t3.small, il progetto adotta strategie di ottimizz
  - Pipeline "Chirurgica": Il workflow di CD include uno step di Emergency Cleanup prima di ogni deploy. Questo comando SSH pulisce preventivamente i residui di build precedenti e le immagini Docker orfane, assicurando che il rollout dei nuovi Pod avvenga sempre in un ambiente pulito e con RAM disponibile.
 
 
-**Istruzioni di Build e Run (From Scratch)**
+## **Istruzioni di Build e Run (From Scratch)** ##
 
 
 Istruzioni per avviare il progetto HackHub in due modalità:
@@ -163,6 +163,7 @@ Istruzioni per avviare il progetto HackHub in due modalità:
 Installare gli strumenti necessari:
 
 • **Git**: Per il versionamento e copiare il repository.
+
 • **Docker Desktop**: Per eseguire i container con Docker Compose v2 abilitato.
 
 **Configurazione Iniziale (Obbligatoria)**
@@ -170,9 +171,11 @@ Esegui questi passaggi una sola volta appena scaricato il progetto.
 
 **Setup iniziale**
 
-Apri il terminale e per clonare il repository lancia: 
-➢ git clone https://github.com/Paxel0/HackHub-AWMC.git
-➢ cd HackHub-AWMC
+Apri il terminale e per clonare il repository lancia:
+
+*git clone https://github.com/Paxel0/HackHub-AWMC.git*
+
+*cd HackHub-AWMC*
 
 **Configurazione variabili d’ambiente**
 Crea il file .env partendo dall'esempio fornito. Questo file conterrà le credenziali del database e i secret JWT. 
@@ -186,24 +189,35 @@ SPRING_PROFILE=prod
 **Avvio con Docker Compose**
 
 Il metodo più rapido per avviare l'intera applicazione è utilizzare Docker Compose, questo metodo avvia l'intero stack (Frontend + Backend + Database) in container isolati.
-➢ docker-compose up --build -d
+
+*docker-compose up --build -d*
+
 Controlla che i tre container siano attivi (Status: Up) scrivendo sul terminale
-➢ docker-compose ps
+
+*docker-compose ps*
+
 Una volta terminato il processo di build:
-    Frontend: http://localhost
+    Frontend: *http://localhost*
+    
 Per spegnere tutto e rimuovere i container:
-➢ docker-compose down
+
+*docker-compose down*
 
 **Deployment AWS (Automatizzato via Pipeline)**
+
 Il progetto è configurato con Continuous Deployment (CD). Non è necessario eseguire comandi manuali per il deploy: ogni modifica inviata al branch main viene automaticamente costruita, testata e rilasciata sul cluster AWS.
 • Come accedere da Online
+
 Una volta che la pipeline di GitHub ha finito il deploy (segno di spunta verde su "Actions"), l'applicazione è accessibile da chiunque su internet.
+
 **L'indirizzo IP/DNS**: *http://3.93.185.107*
+
 ➢ Apri il Browser→ Incolla l'indirizzo nella barra degli indirizzi del browser. 
-     L’app  è funzionante nel browser
+    
+### L’app  è funzionante nel browser ####
      
    
-• **Diagramma di Architettura & Deployment**
+• ## **Diagramma di Architettura & Deployment** ##
 
 Il diagramma mostra il funzionamento di un’applicazione web containerizzata composta da frontend, backend e database.
 
@@ -274,7 +288,7 @@ Il frontend restituisce il risultato all’utente tramite il browser.
 
 
 
-• **Conclusioni**
+• ## **Conclusioni** ##
 HackHub-AWMC è un’applicazione full-stack moderna e scalabile, sviluppata con Java Spring Boot per il backend e Angular per il frontend.
 
 ➢ **Architettura**: Il codice presenta una struttura chiara e modulare, con una netta separazione tra frontend e backend. Questa organizzazione facilita la manutenzione, garantisce sicurezza e integra l’autenticazione tramite JWT.
