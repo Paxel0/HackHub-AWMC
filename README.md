@@ -19,6 +19,7 @@ Il sistema segue un'architettura stateless a microservizi containerizzati gestit
 • Pipeline CI/CD: GitHub Actions,  Pipeline automatizzata di Build, Test e Push su Docker Hub.
 
 Scelte Progettuali
+
 • BACKEND LAYERED ARCHITECTURE: 
 Il codice Java è strutturato in livelli logici per garantire manutenibilità, separazione delle responsabilità e testabilità.
 
