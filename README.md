@@ -1,4 +1,4 @@
-#**Relazione progetto HackHub-AWMC**#
+#Relazione progetto HackHub-AWMC#
 
 HackHub è una piattaforma full-stack progettata per la gestione e la partecipazione agli hackathon. L'applicazione permette agli utenti di iscriversi e gestire le competizioni in modo centralizzato.
 
