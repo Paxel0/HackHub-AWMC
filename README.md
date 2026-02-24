@@ -38,7 +38,7 @@ Il progetto adotta un approccio Cloud-Native, containerizzato e orchestrato, pro
 
 ## **Scelte Progettuali** ##
 
-• ### **BACKEND LAYERED ARCHITECTURE** ### : 
+### **BACKEND LAYERED ARCHITECTURE** ### : 
 
 Il codice Java è strutturato in livelli logici per garantire manutenibilità, separazione delle responsabilità e testabilità.
 
@@ -53,12 +53,12 @@ Il codice Java è strutturato in livelli logici per garantire manutenibilità, s
 ➢ **Security**: Configurazione Spring Security e filtri JWT.
 
 
-• ### **STATELESS AUTHENTICATION: SICUREZZA (JWT)** ### 
+### **STATELESS AUTHENTICATION: SICUREZZA (JWT)** ### 
 
 Per garantire la sicurezza e la scalabilità della piattaforma, è stato implementato un sistema di autenticazione stateless basato sullo standard JWT (JSON Web Token). Questa architettura permette di gestire le sessioni utente in modo sicuro e disaccoppiato, utilizzando il token come chiave d'accesso per le risorse protette. 
 
 
-• ### **FRONTEND: ANGULAR & NGINX** ### 
+### **FRONTEND: ANGULAR & NGINX** ### 
 
 
 ➢ **Angular**: Framework frontend utilizzato per sviluppare l’interfaccia utente come Single Page Application (SPA), con gestione delle rotte, componenti e servizi.
@@ -77,7 +77,7 @@ La struttura logica del frontend è organizzata nel seguente modo:
 
 
 
-• ### **CONTAINERIZZAZIONE (DOCKER)** ### 
+### **CONTAINERIZZAZIONE (DOCKER)** ### 
 
 
 L'intera applicazione è containerizzata per garantire la portabilità tra sviluppo (locale) e produzione (AWS Cloud). Abbiamo adottato le seguenti strategie:
@@ -94,7 +94,7 @@ L'intera applicazione è containerizzata per garantire la portabilità tra svilu
 
 
 
-• ### **ORCHESTRAZIONE (KUBERNETES)** ### 
+### **ORCHESTRAZIONE (KUBERNETES)** ### 
 
 
 Per la gestione dei container abbiamo scelto K3s, una distribuzione certificata di Kubernetes leggera e ottimizzata per il risparmio di risorse. L'infrastruttura è ospitata su un'istanza AWS EC2 e gestita tramite:
@@ -110,7 +110,7 @@ Per la gestione dei container abbiamo scelto K3s, una distribuzione certificata 
 
 
 
-• ### **PIPELINE CI/CD** ### 
+### **PIPELINE CI/CD** ### 
 
 
 Il ciclo di vita del software è automatizzato tramite una pipeline di Continuous Integration e Continuous Deployment, articolata in quattro fasi principali:
@@ -124,7 +124,7 @@ Il ciclo di vita del software è automatizzato tramite una pipeline di Continuou
 ➢ **Continuous Deployment (CD)**: In caso di push sul branch main, la pipeline si connette via SSH al server AWS EC2, aggiorna i manifest Kubernetes e attiva un rollout restart del cluster K3s, garantendo che l'ultima versione dell'app sia immediatamente online senza interventi manuali.
 
 
-• ### **CONFIGURAZIONE AWS EC2** ### 
+### **CONFIGURAZIONE AWS EC2** ### 
 
 
 L'applicazione è ospitata su un'istanza Amazon EC2, configurata come nodo singolo per il cluster K3s.
