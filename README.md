@@ -131,7 +131,7 @@ L'applicazione è ospitata su un'istanza Amazon EC2, configurata come nodo singo
 
 1. **Specifiche Hardware e OS**
  - Tipo di Istanza: t3.small
- - Risorse: 2 vCPU e 2 GiB di RAM, una configurazione scelta per garantire stabilità sia al cluster Kubernetes (K3s)
+ - Risorse: 2 vCPU e 2 GiB di RAM, una configurazione scelta per garantire stabilità al cluster Kubernetes (K3s)
  - Sistema Operativo: Ubuntu
 
 2. **Networking e Security Group (Firewall)**
