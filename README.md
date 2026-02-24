@@ -38,7 +38,7 @@ Il progetto adotta un approccio Cloud-Native, containerizzato e orchestrato, pro
 
 ## **Scelte Progettuali** ##
 
-### **BACKEND LAYERED ARCHITECTURE** ### : 
+### **BACKEND LAYERED ARCHITECTURE** ### 
 
 Il codice Java è strutturato in livelli logici per garantire manutenibilità, separazione delle responsabilità e testabilità.
 
