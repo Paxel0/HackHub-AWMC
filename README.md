@@ -146,18 +146,18 @@ L'istanza è protetta da un Security Group che implementa il principio del "mini
  - PostgreSQL: Eseguito come Pod all'interno del cluster con storage persistente (PersistentVolumeClaim) per garantire la durabilità dei dati.
 
 4. **Ottimizzazione e Gestione della Memoria**
-Nonostante i 2GB di RAM della t3.small, il progetto adotta strategie di ottimizzazione avanzate per evitare saturazioni:
- - JVM Tuning: Il backend Spring Boot è configurato con limiti espliciti sulla memoria heap (-Xmx512m -Xms256m).
- - Pipeline "Chirurgica": Il workflow di CD include uno step di Emergency Cleanup prima di ogni deploy. Questo comando SSH pulisce preventivamente i residui di build precedenti e le immagini Docker orfane, assicurando che il rollout dei nuovi Pod avvenga sempre in un ambiente pulito e con RAM disponibile.
+La t3 small ha solo 2 GB di RAM ma il progetto adotta strategie di ottimizzazione avanzate per evitare saturazioni:
+ - Regolazione JVM: Il backend Spring Boot è configurato con limiti espliciti sulla memoria heap (-Xmx512m -Xms256m).
+ - Pipeline: Il workflow di CD include uno step di Emergency Cleanup prima di ogni deploy. Questo comando SSH pulisce preventivamente i residui di build precedenti e le immagini Docker orfane, assicurando che il rollout dei nuovi Pod avvenga sempre in un ambiente pulito e con RAM disponibile.
 
 
 ## **Istruzioni di Build e Run (From Scratch)** ##
 
-
 Istruzioni per avviare il progetto HackHub in due modalità:
-1.  Locale con Docker (Test rapidi).
-2.  Cloud AWS (Deployment in produzione con Kubernetes).
 
+
+
+1.  ### Locale con Docker (Test rapidi). ###
 **Prerequisiti**
 
 Installare gli strumenti necessari:
@@ -166,10 +166,11 @@ Installare gli strumenti necessari:
 
 • **Docker Desktop**: Per eseguire i container con Docker Compose v2 abilitato.
 
-**Configurazione Iniziale (Obbligatoria)**
+### **Configurazione Iniziale (Obbligatoria)** ###
+
 Esegui questi passaggi una sola volta appena scaricato il progetto.
 
-**Setup iniziale**
+### **Setup iniziale** ### 
 
 Apri il terminale e per clonare il repository lancia:
 
@@ -177,7 +178,7 @@ Apri il terminale e per clonare il repository lancia:
 
 *cd HackHub-AWMC*
 
-**Configurazione variabili d’ambiente**
+### **Configurazione variabili d’ambiente** ###
 Crea il file .env partendo dall'esempio fornito. Questo file conterrà le credenziali del database e i secret JWT. 
 Incolla:
 DB_NAME=nome_db
@@ -186,7 +187,7 @@ DB_PASSWORD=password
 HACKHUB_APP_JWTSECRETBASE64=’Stringa accettabile’
 SPRING_PROFILE=prod
 
-**Avvio con Docker Compose**
+### **Avvio con Docker Compose** ### 
 
 Il metodo più rapido per avviare l'intera applicazione è utilizzare Docker Compose, questo metodo avvia l'intero stack (Frontend + Backend + Database) in container isolati.
 
@@ -203,7 +204,8 @@ Per spegnere tutto e rimuovere i container:
 
 *docker-compose down*
 
-**Deployment AWS (Automatizzato via Pipeline)**
+
+### **2.  Cloud AWS (Deployment in produzione con Kubernetes).** ### 
 
 Il progetto è configurato con Continuous Deployment (CD). Non è necessario eseguire comandi manuali per il deploy: ogni modifica inviata al branch main viene automaticamente costruita, testata e rilasciata sul cluster AWS.
 • Come accedere da Online
@@ -289,6 +291,7 @@ Il frontend restituisce il risultato all’utente tramite il browser.
 
 
 • ## **Conclusioni** ##
+
 HackHub-AWMC è un’applicazione full-stack moderna e scalabile, sviluppata con Java Spring Boot per il backend e Angular per il frontend.
 
 ➢ **Architettura**: Il codice presenta una struttura chiara e modulare, con una netta separazione tra frontend e backend. Questa organizzazione facilita la manutenzione, garantisce sicurezza e integra l’autenticazione tramite JWT.
