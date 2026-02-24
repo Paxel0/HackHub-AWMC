@@ -1,4 +1,4 @@
-**Relazione progetto HackHub-AWMC**
+#**Relazione progetto HackHub-AWMC**#
 
 HackHub è una piattaforma full-stack progettata per la gestione e la partecipazione agli hackathon. L'applicazione permette agli utenti di iscriversi e gestire le competizioni in modo centralizzato.
 
@@ -184,6 +184,7 @@ HACKHUB_APP_JWTSECRETBASE64=’Stringa accettabile’
 SPRING_PROFILE=prod
 
 **Avvio con Docker Compose**
+
 Il metodo più rapido per avviare l'intera applicazione è utilizzare Docker Compose, questo metodo avvia l'intero stack (Frontend + Backend + Database) in container isolati.
 ➢ docker-compose up --build -d
 Controlla che i tre container siano attivi (Status: Up) scrivendo sul terminale
@@ -203,6 +204,7 @@ Una volta che la pipeline di GitHub ha finito il deploy (segno di spunta verde s
      
    
 • **Diagramma di Architettura & Deployment**
+
 Il diagramma mostra il funzionamento di un’applicazione web containerizzata composta da frontend, backend e database.
 
 <img width="300" height="600" alt="Kubernetes Container-2026-02-24-104409" src="https://github.com/user-attachments/assets/efbfc2f9-3c35-47b3-ac16-ad754002d71d" />
@@ -276,5 +278,7 @@ Il frontend restituisce il risultato all’utente tramite il browser.
 HackHub-AWMC è un’applicazione full-stack moderna e scalabile, sviluppata con Java Spring Boot per il backend e Angular per il frontend.
 
 ➢ **Architettura**: Il codice presenta una struttura chiara e modulare, con una netta separazione tra frontend e backend. Questa organizzazione facilita la manutenzione, garantisce sicurezza e integra l’autenticazione tramite JWT.
+
 ➢ **Cloud e Kubernetes**: Il progetto è progettato per il cloud e pronto per il deployment in produzione, incluso il deploy tramite Kubernetes. L’applicazione è suddivisa in microservizi indipendenti — Frontend, Backend e Database — orchestrati tramite container, semplificando scalabilità e gestione in ambienti distribuiti.
+
 ➢ **Affidabilità e sicurezza**: L’utilizzo di volumi persistenti per il database e di Secret per la gestione delle credenziali offre un approccio solido per la sicurezza e la gestione dei dati in contesti distribuiti.
