@@ -147,7 +147,7 @@ L'istanza è protetta da un Security Group che implementa il principio del "mini
 
 4. **Ottimizzazione e Gestione della Memoria**
 La t3 small ha solo 2 GB di RAM ma il progetto adotta strategie di ottimizzazione avanzate per evitare saturazioni:
- - Regolazione JVM: Il backend Spring Boot è configurato con limiti espliciti sulla memoria heap (-Xmx512m -Xms256m).
+ - Regolazione JVM: Il backend Spring Boot è configurato con limiti espliciti sulla memoria heap.
  - Pipeline: Il workflow di CD include uno step di Emergency Cleanup prima di ogni deploy. Questo comando SSH pulisce preventivamente i residui di build precedenti e le immagini Docker orfane, assicurando che il rollout dei nuovi Pod avvenga sempre in un ambiente pulito e con RAM disponibile.
 
 
@@ -166,11 +166,11 @@ Installare gli strumenti necessari:
 
 • **Docker Desktop**: Per eseguire i container con Docker Compose v2 abilitato.
 
-### **Configurazione Iniziale (Obbligatoria)** ###
+**Configurazione Iniziale (Obbligatoria)** 
 
 Esegui questi passaggi una sola volta appena scaricato il progetto.
 
-### **Setup iniziale** ### 
+**Setup iniziale** 
 
 Apri il terminale e per clonare il repository lancia:
 
@@ -178,7 +178,7 @@ Apri il terminale e per clonare il repository lancia:
 
 *cd HackHub-AWMC*
 
-### **Configurazione variabili d’ambiente** ###
+**Configurazione variabili d’ambiente**
 Crea il file .env partendo dall'esempio fornito. Questo file conterrà le credenziali del database e i secret JWT. 
 Incolla:
 DB_NAME=nome_db
@@ -187,7 +187,7 @@ DB_PASSWORD=password
 HACKHUB_APP_JWTSECRETBASE64=’Stringa accettabile’
 SPRING_PROFILE=prod
 
-### **Avvio con Docker Compose** ### 
+**Avvio con Docker Compose**
 
 Il metodo più rapido per avviare l'intera applicazione è utilizzare Docker Compose, questo metodo avvia l'intero stack (Frontend + Backend + Database) in container isolati.
 
@@ -208,7 +208,8 @@ Per spegnere tutto e rimuovere i container:
 ### **2.  Cloud AWS (Deployment in produzione con Kubernetes).** ### 
 
 Il progetto è configurato con Continuous Deployment (CD). Non è necessario eseguire comandi manuali per il deploy: ogni modifica inviata al branch main viene automaticamente costruita, testata e rilasciata sul cluster AWS.
-• Come accedere da Online
+
+• Come accedere da Browser
 
 Una volta che la pipeline di GitHub ha finito il deploy (segno di spunta verde su "Actions"), l'applicazione è accessibile da chiunque su internet.
 
@@ -216,10 +217,10 @@ Una volta che la pipeline di GitHub ha finito il deploy (segno di spunta verde s
 
 ➢ Apri il Browser→ Incolla l'indirizzo nella barra degli indirizzi del browser. 
     
-### L’app  è funzionante nel browser ####
+#### **L’app  è funzionante nel browser** ####
      
    
-• ## **Diagramma di Architettura & Deployment** ##
+## **Diagramma di Architettura & Deployment** ##
 
 Il diagramma mostra il funzionamento di un’applicazione web containerizzata composta da frontend, backend e database.
 
@@ -290,7 +291,7 @@ Il frontend restituisce il risultato all’utente tramite il browser.
 
 
 
-• ## **Conclusioni** ##
+## **Conclusioni** ##
 
 HackHub-AWMC è un’applicazione full-stack moderna e scalabile, sviluppata con Java Spring Boot per il backend e Angular per il frontend.
 
