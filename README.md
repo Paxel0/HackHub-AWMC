@@ -154,7 +154,7 @@ Se non modificate nel file .env o nel docker-compose.yml, le credenziali di defa
 • Diagramma di Architettura & Deployment
 Il diagramma mostra il funzionamento di un’applicazione web containerizzata composta da frontend, backend e database.
 
-<img width="1608" height="5826" alt="Kubernetes Container-2026-02-24-104409" src="https://github.com/user-attachments/assets/efbfc2f9-3c35-47b3-ac16-ad754002d71d" />
+<img width="1000" height="2000" alt="Kubernetes Container-2026-02-24-104409" src="https://github.com/user-attachments/assets/efbfc2f9-3c35-47b3-ac16-ad754002d71d" />
 
 Flusso principale:
 1. Utente → Frontend
