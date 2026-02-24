@@ -25,9 +25,13 @@ Scelte Progettuali
 Il codice Java è strutturato in livelli logici per garantire manutenibilità, separazione delle responsabilità e testabilità.
 
 ➢ Controller: Gestione delle richieste HTTP.
+
 ➢ Service: Logica di business.
+
 ➢ Repository: Accesso ai dati (Spring Data JPA).
+
 ➢ Entity: Mappatura ORM del database.
+
 ➢ Security: Configurazione Spring Security e filtri JWT.
 
 
