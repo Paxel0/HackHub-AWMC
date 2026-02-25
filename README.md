@@ -118,6 +118,20 @@ Setup iniziale: Apri il terminale e per clonare il repository lancia:
 ➢ git clone https://github.com/Paxel0/HackHub-AWMC.git
 ➢ cd HackHub-AWMC
 
+Configurazione data.sql
+
+
+Crea un file data.sql dentro la cartella resources e inserisci
+INSERT INTO hackathons (id, name, creator, description, start_date, end_date, location, max_teams, reward) VALUES
+(1, 'AI 2024', 'Unicam Informatica', 'Esplora le frontiere dell intelligenza artificiale e sviluppa soluzioni innovative per il futuro.', '2026-10-15', '2026-10-18', 'Camerino / Online', 50, 5000),
+(2, 'Cisco', 'Fausto Marcantoni', 'Sfida te stesso nel mondo del networking e della sicurezza informatica.', '2026-12-10', '2026-12-12', 'Camerino', 50, 1000),
+(3, 'GreenTech summit', 'EcoGlobal', 'Unisciti a noi per creare tecnologie sostenibili.', '2026-11-01', '2026-11-03', 'Roma', 75, 10000),
+(4, 'Health data sprint', 'Medtech INC', 'Rivoluziona il settore sanitario utilizzando l analisi di dati medici per migliorare la prevenzione e la cura dei pazienti', '2026-09-20', '2026-09-22', 'Milano', 200, 15000),
+(5, 'BackEnd builders', 'Diego Bonura', 'Mettiti alla prova nella costruzioni di infrastrutture server robuste, scalabili e sicure per le applicazioni del domani.', '2026-02-16', '2026-02-18', 'Camerino', 50, 1000),
+(6, 'VR/AR creator fest', 'Metaverse co.', 'Immergiti nella realtà virtuale e aumentata per progettare e realizzare esperienze digitali immersive e coinvolgenti.', '2026-03-01', '2026-03-03', 'Macerata', 75, 2000)
+ON CONFLICT (id) DO NOTHING;
+
+
 Configurazione variabili d’ambiente
 Crea il file .env partendo dall'esempio fornito. Questo file conterrà le credenziali del database e i secret JWT. 
 Incolla:
